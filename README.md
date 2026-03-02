@@ -6,94 +6,105 @@ Thuật toán SPADE, được đề xuất bởi Mohammed J. Zaki (2001), phân 
 
 ---
 
-## 1. Các File Được Thay Đổi / Thêm Mới So Với Weka Gốc
+## 1. Tổng Quan Đơn Giản Thuật Toán SPADE 🧠
 
-Việc tích hợp chủ yếu tạo ra cấu trúc mã nguồn ở package mới `weka.associations.spade` và cập nhật đăng ký class trong các Properties của GUI.
+**SPADE** là một thuật toán khai phá mẫu tuần tự (Sequential Pattern Mining) vô cùng mạnh mẽ và tối ưu. Thay vì phải quét qua cơ sở dữ liệu nhiều lần để kiểm đếm như thuật toán Apriori hay GSP, SPADE sử dụng một **định dạng dữ liệu dọc (Vertical Data Format)** được gọi là **ID-Lists**.
 
-### Các File Thêm Mới ([NEW])
-
-1. `src/main/java/weka/associations/Spade.java`
-2. `src/main/java/weka/associations/spade/IdList.java`
-3. `src/main/java/weka/associations/spade/Element.java`
-4. `src/main/java/weka/associations/spade/Sequence.java`
-5. `src/main/java/weka/associations/spade/EquivalenceClass.java`
-6. `src/test/java/weka/associations/SpadeTest.java`
-7. `src/main/java/weka/associations/spade/sample_sequential.arff` (File dữ liệu mẫu)
-
-### Các File Chỉnh Sửa ([MODIFIED])
-
-1. `src/main/java/weka/gui/GenericObjectEditor.props`
+Cụ thể, đối với mỗi một Item, thuật toán sẽ theo dõi danh sách các sự kiện mà nó xuất hiện dưới dạng một ma trận các cặp `(Sequence ID - SID, Event ID - EID)`.
+Nhờ vào cấu trúc dọc này, SPADE có thể tìm ra các mẫu tuần tự kéo dài bằng cách thực hiện phép **kết nối (join)** trực tiếp trên các danh sách ID-Lists, giúp tránh phải lặp qua lại toàn bộ Data và giảm thiểu đáng kể chi phí tính toán truy xuất cũng như bộ nhớ. Hơn nữa, nó chia không gian duyệt tổng thể thành các "lớp tương đương" (Equivalence Classes) có chung tiền tố, giúp giới hạn số lượng pattern sinh ra.
 
 ---
 
-## 2. Giải Thích Chi Tiết Các File / Class Quan Trọng
+## 2. Cách Thức Tích Hợp Vào Weka 🔌
 
-### 2.1. `weka.associations.Spade`
-Class chính thực thi thuật toán SPADE, tích hợp sâu vào Weka bằng cách kế thừa `AbstractAssociator` và implement `OptionHandler`.
-* **Vai trò:** Là điểm đầu vào khi người dùng gọi SPADE từ Weka GUI hoặc CLI. 
-* **Quá trình thực thi (`buildAssociations`):**
-   1. Đọc dữ liệu đầu vào (Instances) dạng Data Ngang (Horizontal).
-   2. Chuyển đổi thành Vertical DB (sử dụng thư viện `IdList.java`).
-   3. Tìm kiếm các Frequent 1-sequences và 2-sequences đầu tiên.
-   4. Tạo ra các nhóm danh mục tương đương (`EquivalenceClass`).
-   5. Đệ quy gọi `enumerateFrequentSequences()` để duyệt tìm các mẫu phức tạp hơn.
-* **Tham số GUI:** Hỗ trợ tham số `MinSupport` (ngưỡng count tối thiểu, mặc định 0.5) và `DataSeqID` (vị trí côt Sequence ID, mặc định 1).
+Thuật toán **SPADE** trong repository này không tồn tại dưới dạng module rời hay plugin độc lập, mà được **tích hợp trực tiếp vào lõi (core) của hệ thống Weka**.
 
-### 2.2. `IdList.java`
-* **Vai trò:** Lõi cấu trúc dữ liệu của định dạng dọc (Vertical ID-List). Mỗi Item (vd: `item1=A`) lưu một bảng danh sách các cặp (Sequence ID, Event ID).
-* **Các toán tử then chốt:**
-   * `temporalJoin`: Nối hai id-list để sinh chuỗi tuần tự mới (Sequence extension - khi item xảy ra SAU item trước).
-   * `equalityJoin`: Nối hai id-list để sinh Tập mục mới (Itemset extension - khi item xảy ra CÙNG LÚC với item trước trong cùng Event ID).
+Cụ thể, lớp `Spade`:
 
-### 2.3. `Sequence.java` & `Element.java`
-* `Element.java`: Tương đương một **Itemset**. Đây là tập hợp của 1 hoặc nhiều Items xuất hiện trong cùng 1 sự kiện thời gian.
-* `Sequence.java`: Tương đương một **Chuỗi**. Cấu trúc là một mảng thứ tự (List) các `Element`. Mỗi chuỗi cũng lưu kèm 1 biến chứa đối tượng `IdList` tương ứng với chuỗi cấu trúc đó.
+* Kế thừa từ `weka.associations.AbstractAssociator` – lớp nền tảng dành cho toàn bộ các thuật toán khai thác luật kết hợp và tuần tự trong Weka.
+* Triển khai các giao diện `OptionHandler` và `TechnicalInformationHandler`, nhờ đó có thể hoạt động đồng thời trên:
 
-### 2.4. `EquivalenceClass.java`
-* **Vai trò:** Thể hiện Cây Khônng Gian Duyệt Lattice theo hướng phân lớp các chuỗi có **Cùng Tiền Tố (Prefix)**.
-* Khi hai thuộc tính chuỗi có chung một prefix mẹ, chúng ta chỉ cần chạy tổ hợp Nối (Join `IdList`) giữa chúng chứ không phải mang rà quét lại database ban đầu. Đây là hàm lõi đảm nhận logic đệ quy tìm kiếm DFS.
+  * Giao diện đồ họa **Weka Explorer / KnowledgeFlow**
+  * Công cụ dòng lệnh **CLI**
+* Xử lý dữ liệu trực tiếp dưới dạng đối tượng `Instances` của Weka (mô hình bảng chuẩn của hệ thống), sau đó chuyển đổi sang cấu trúc **Vertical Database (ID-List)** để thực thi thuật toán SPADE nguyên bản theo đúng thiết kế học thuật.
 
-### 2.5. `GenericObjectEditor.props`
-* **Sự thay đổi:** File cơ bản của Weka giữ danh sách liệt kê các Class để hiển thị trên thanh thả xuống Dropdown ở giao diện Window. Đoạn mã `weka.associations.Spade` đã được thêm vào nhóm biến `weka.associations.Associator=\`.
+Quan trọng hơn, việc tích hợp này được thực hiện bằng cách **mở rộng và chỉnh sửa trực tiếp mã nguồn lõi của Weka**, thay vì triển khai dưới dạng **Weka Package (plugin rời)**.
+
+Điều này dẫn đến các đặc điểm sau:
+
+* **Thuật toán Built-in:** SPADE trở thành một thành phần mặc định của hệ thống. Khi khởi động Weka, thuật toán xuất hiện sẵn trong danh sách `Associator`, tương tự như các thuật toán tích hợp sẵn khác như `Apriori` hay `FPGrowth`.
+* **Tổ chức mã nguồn chuẩn hệ thống:** Mã nguồn được đặt trực tiếp trong package `weka.associations`, tuân thủ cấu trúc kế thừa và kiến trúc nội bộ của framework.
+* **Biên dịch nguyên khối:** Khi build toàn dự án bằng Maven (`mvn clean package`), SPADE được compile cùng toàn bộ lõi Weka và đóng gói chung trong file thực thi `weka-dev-*.jar`. Không cần cài đặt qua Weka Package Manager hay thao tác import bổ sung.
+
+Tóm lại, SPADE trong dự án này là một **thành phần lõi tích hợp hoàn chỉnh**, vận hành như một thuật toán mặc định của hệ sinh thái Weka, chứ không phải một tiện ích mở rộng bên ngoài.
 
 ---
 
-## 3. Tổng Quan Đơn Giản Thuật Toán SPADE
+## 3. Các File Quan Trọng Được Thêm Vào 📂
 
-SPADE (M. Zaki, 2001) giải quyết bài toán khai thác chuỗi bằng cách khắc phục sự nặng nề trong I/O đĩa dính kèm theo phương pháp quen thuộc ở trước đó như Apriori All hay GSP. 
+Để đưa SPADE vào hoạt động thực tiễn trong Weka, cấu trúc hệ thống đã được mở rộng bằng các tệp Java cốt lõi bên trong gói thư mục `weka.associations`:
 
-Trong khi GSP duyệt Database *Horizontal* qua nhiều vòng (đếm, băm, sinh chuỗi), thì SPADE áp dụng các kỹ thuật cốt lõi:
+### Core Algorithm (Thuật Toán Chính):
 
-1. **Từ Ngang Sang Dọc (Vertical Data Representation):**
-   * SPADE không quét từng dòng hóa đơn của khách. SPADE chọn lưu cho **Mỗi Item** một "bảng danh sách ID" (`IdList`) với dạng là `(Khách hàng ID, Giờ Mua ID)`.
-   * **Lợi ích:** Ta chỉ cần **Join** hai bảng danh sách của "Sữa" và "Bánh Mì" là biết chính xác bao nhiêu Khách Hàng mua 2 thứ này. (Giao tập ID lại với nhau trong RAM). Thao tác này chỉ cần cộng và tính giao các phần tử nhanh chóng, không dính líu đến quét Đĩa (I/O) tốn tài nguyên.
+- **`Spade.java`**: File điều phối trung tâm chứa logic cấu hình tùy chọn, thiết lập tham số Weka và thực thi luồng chuyển đổi `buildAssociations()`.
+- **`spade/IdList.java`**: Cấu trúc dữ liệu danh sách dọc đặc trưng của SPADE, đảm nhiệm chức năng Join thời gian (`temporalJoin`) và Join đồng thời (`equalityJoin`).
+- **`spade/Sequence.java`**: Đại diện tập hợp một dãy mẫu tuần tự được khai phá.
+- **`spade/EquivalenceClass.java`**: Quản lý nhóm các mẫu có chung đoạn tiền tố (prefix) để thu nhỏ giới hạn bộ nhớ theo từng vùng.
+- **`spade/Element.java`**: Hình thức lưu giữ itemset (khi nhiều items xảy ra trong cùng một Event thời điểm).
 
-2. **Lớp Tương Đương (Equivalence Classes):**
-   * SPADE gộp các chuỗi sinh ra theo Tiền Tố (Prefix) thành những Lớp Lớn (Class).
-   * Ví dụ, nhóm `[A]` sẽ chứa các chuỗi `[A->B], [A->C], [A->D]`. Nhóm `[B]` sẽ chứa `[B->C], [B->D]`.
-   * **Lợi ích:** Không gian duyệt sẽ độc lập hoàn toàn với nhau. Ta có thể quăng nhóm `[A]` sang xử lý ở Thread hay Mem khác mà không cần lo bị trùng.
+### Giao Diện Hiển Thị (Properties):
 
-3. **Chỉ Quét DB Đúng Lần Đầu:**
-   * Sau khi bước 1 trích xuất xong các IdList ứng với tập độ sâu L = 1, Thuật toán đã "nhét" được toàn bộ Database vào ID-List. Mọi mức độ tăng tiến về sau được truy xuất từ RAM nhờ Join Array. Thuật toán không bao giờ cần Load lại bảng Instance gốc.
+- **`GenericPropertiesCreator.props`** & **`GenericObjectEditor.props`**: Tập hợp các file hệ thống đã được cập nhật nội dung để Weka Explorer quét ra thuật toán `weka.associations.Spade` ở màn hình Frontend.
+
+### Test Suite (JUnit 5 Unit Tests):
+
+- `SpadeBoundaryTest.java`, `SpadeFunctionalTest.java`, `SpadeInternalAlgorithmTest.java`, `SpadePropertyTest.java`, `SpadeRegressionTest.java`, `SpadeStressTest.java`: Đây là bộ bảo đảm chất lượng (QA) hạng nặng kiểm thử các tính năng SPADE, ngăn chặn OutOfMemoryError, và dò tìm Edge-Cases (Ví dụ như Minimum Number of Instances = 0).
 
 ---
 
-## 4. Hướng Dẫn Chạy Thử SPADE Trên Weka
+## 4. Quản Trị Dữ Liệu & Phạm Vi Tùy Chỉnh (Customization Range) ⚙️
 
-Đoạn lệnh Build Maven chuẩn đã chạy thành công và tạo file Jar đóng gói ở `/dist`.
+### Định Dạng Dữ Liệu Được Hỗ Trợ:
 
-**Cách dùng thử trực quan SPADE qua giao diện Weka:**
+Khác với nhiều thuật toán khai phá cơ bản, SPADE tích hợp trong Weka có khả năng xử lý nhiều luồng Data linh hoạt:
 
-Chạy thư viện ở terminal:
+1. **Dữ Liệu Quan Hệ (Relational Attributes):** Được hỗ trợ chuẩn hóa cho chuỗi (thường dùng định dạng luồng `.arff`). Mỗi Sequence bao gồm một `Bag/Relation` các Events, và mỗi Event lại chứa nhiều hàng mục Items.
+2. **Dữ Liệu Bảng Phẳng (Horizontal Attributes):** Ở góc độ đơn giản hơn, nếu Data chỉ có các dòng sự kiện, chức năng Flat sẽ tự động bắt một cột chỉ mục làm **Sequence ID** và gộp các event cùng ID lại với nhau.
+3. Chấp nhận các kiểu cột thông dụng: `Nominal` (Phân loại), `String` (Chuỗi), và `Numeric` (Số liệu). Thuật toán cũng tự động bỏ qua các trường `Missing Values` trống.
+
+### Tùy Chỉnh Tham Số (Options Range):
+
+SPADE cho phép cấu hình can thiệp qua giao diện người dùng Weka hoặc qua arguments:
+
+- **`-S <threshold>` (Minimum Support)**: Tỉ lệ phần trăm Threshold tối thiểu (phạm vi từ `0.0` đến `1.0`). Mặc định là `0.5` (50%). Xác định điều kiện một mẫu chuỗi phải xuất hiện trong bao nhiêu % tệp dữ liệu thì mới được kết luận là "Frequent Pattern".
+- **`-I <index>` (Sequence ID Index)**: Chỉ số thứ tự cột (Bắt đầu đếm từ 1) dùng làm ID nhận diện phân cách Sequence khi bạn nhập liệu dạng Bảng Phẳng/Horizontal. Mặc định là Cột `1`.
+- **`-D` (Debug Mode)**: Chế độ xuất Log Terminal, in ra các số lượng cấu trúc và độ biến thiên ID-Lists cho mục đích tối ưu phần cứng.
+
+---
+
+## 5. Cách Chạy SPADE Trong Thực Tế 🚀
+
+### Cách 1: Qua giao diện Weka GUI (Explorer)
+
+1. Mở ứng dụng **Weka GUI Chooser** bằng cách chạy file `run_weka.bat` và nhấp chọn ứng dụng **Explorer**.
+2. Tại thẻ **Preprocess**: Nhấn _Open file..._ và nạp tệp dữ liệu (ARFF/CSV) có cấu trúc tuần tự hoặc có định danh cọt SeqID.
+3. Chuyển sang thẻ **Associate**: Nhấp chọn nút **Choose** ở thanh thiết lập thuật toán trên cùng.
+4. Mở rộng thư mục `weka` → `associations` → Chọn **Spade**.
+5. Bạn có thể Click chuột trái vào thanh tên **Spade** vừa chọn để mở bảng cài đặt (Sửa đổi `minSupport`, v.v).
+6. Nhấn nút **Start** ở góc phải để chạy khai phá mẫu! Các mẫu kết quả sẽ xuất hiện trên màn hình Log.
+
+### Cách 2: Qua Command Line (CLI) Terminal
+
+Dành cho người dùng xử lý lô (Batch processing):
+
 ```bash
-# Vào đường dẫn project weka core
-cd weka/trunk/weka
-
-# Load thư viện bằng PowerShell và Khởi động Weka
-$cp = "dist\weka-dev-3.9.7-SNAPSHOT.jar"; Get-ChildItem lib\*.jar | ForEach-Object { $cp += ";lib\$($_.Name)" }; java -cp $cp weka.gui.GUIChooser
+java -cp weka.jar weka.associations.Spade -t data/sequence_data.arff -S 0.4 -I 1
 ```
 
-1. Ở giao diện `Chooser`, chọn nút **Explorer**.
-2. Ở tab `Preprocess` bấm **Open file...**, chọn File sample `.arff` (vd file `sample_sequential.arff` ở đường dẫn `src/main/java/weka/associations/spade/sample_sequential.arff`).
-3. Chuyển qua tab **Associate** → Ở ô Associator (thường đang là `Apriori`), click vô nút **Choose** → Cuộn xuống chọn **Spade**.
-4. Chọn xong, bấm vô "chữ (Textbox)" của thuật Toán để cấu hình tham số như `minSupport` hay `dataSeqID`. Bấm **Start** để khai thác kết quả!
+### Cách 3: Kiểm thử lập trình nghiệm thu (Maven)
+
+Cách chạy toàn bộ Test Suites của thuật toán SPADE ở môi trường lập trình để nghiệm thu:
+
+```bash
+mvn test -Dtest="weka.associations.Spade*Test"
+```
