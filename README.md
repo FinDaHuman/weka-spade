@@ -6,7 +6,18 @@ Thuật toán SPADE, được đề xuất bởi Mohammed J. Zaki (2001), phân 
 
 ---
 
-## 1. Các File Được Thay Đổi / Thêm Mới So Với Weka Gốc
+## 1. Cách Thức Tích Hợp (Mã Nguồn Lõi vs Plugin)
+
+Thuật toán SPADE trong repository này được tích hợp bằng cách **chỉnh sửa và mở rộng trực tiếp mã nguồn lõi (core source code)** của Weka, chứ **không phải** thông qua hệ thống Plugin rời (Weka Packages).
+
+**Đặc điểm của cách triển khai này:**
+* **Thuật toán Built-in:** SPADE trở thành một thuật toán mặc định biên dịch kèm theo lõi Weka. Ngay khi khởi động giao diện phần mềm, SPADE đã có sẵn trong danh sách các bộ liên kết (Associator) cùng với `Apriori` hay `FPGrowth`.
+* **Cấu trúc Thư mục:** Mã nguồn SPADE được đặt trực tiếp trong package nền tảng `weka.associations`, đi theo chuẩn kế thừa các class trừu tượng hệ thống như `AbstractAssociator`.
+* **Biên dịch nguyên khối:** Không cần đóng gói chuẩn hóa cấu trúc thư mục rồi import cài đặt qua *Weka Package Manager*. Khi thực thi lệnh build maven toàn dự án (`mvn clean package`), mã nguồn SPADE được cộng gộp và compile thẳng vào trong file thực thi chính `weka-dev-*.jar`.
+
+---
+
+## 2. Các File Được Thay Đổi / Thêm Mới So Với Weka Gốc
 
 Việc tích hợp chủ yếu tạo ra cấu trúc mã nguồn ở package mới `weka.associations.spade` và cập nhật đăng ký class trong các Properties của GUI.
 
@@ -26,9 +37,9 @@ Việc tích hợp chủ yếu tạo ra cấu trúc mã nguồn ở package mớ
 
 ---
 
-## 2. Giải Thích Chi Tiết Các File / Class Quan Trọng
+## 3. Giải Thích Chi Tiết Các File / Class Quan Trọng
 
-### 2.1. `weka.associations.Spade`
+### 3.1. `weka.associations.Spade`
 Class chính thực thi thuật toán SPADE, tích hợp sâu vào Weka bằng cách kế thừa `AbstractAssociator` và implement `OptionHandler`.
 * **Vai trò:** Là điểm đầu vào khi người dùng gọi SPADE từ Weka GUI hoặc CLI. 
 * **Quá trình thực thi (`buildAssociations`):**
@@ -39,26 +50,26 @@ Class chính thực thi thuật toán SPADE, tích hợp sâu vào Weka bằng c
    5. Đệ quy gọi `enumerateFrequentSequences()` để duyệt tìm các mẫu phức tạp hơn.
 * **Tham số GUI:** Hỗ trợ tham số `MinSupport` (ngưỡng count tối thiểu, mặc định 0.5) và `DataSeqID` (vị trí côt Sequence ID, mặc định 1).
 
-### 2.2. `IdList.java`
+### 3.2. `IdList.java`
 * **Vai trò:** Lõi cấu trúc dữ liệu của định dạng dọc (Vertical ID-List). Mỗi Item (vd: `item1=A`) lưu một bảng danh sách các cặp (Sequence ID, Event ID).
 * **Các toán tử then chốt:**
    * `temporalJoin`: Nối hai id-list để sinh chuỗi tuần tự mới (Sequence extension - khi item xảy ra SAU item trước).
    * `equalityJoin`: Nối hai id-list để sinh Tập mục mới (Itemset extension - khi item xảy ra CÙNG LÚC với item trước trong cùng Event ID).
 
-### 2.3. `Sequence.java` & `Element.java`
+### 3.3. `Sequence.java` & `Element.java`
 * `Element.java`: Tương đương một **Itemset**. Đây là tập hợp của 1 hoặc nhiều Items xuất hiện trong cùng 1 sự kiện thời gian.
 * `Sequence.java`: Tương đương một **Chuỗi**. Cấu trúc là một mảng thứ tự (List) các `Element`. Mỗi chuỗi cũng lưu kèm 1 biến chứa đối tượng `IdList` tương ứng với chuỗi cấu trúc đó.
 
-### 2.4. `EquivalenceClass.java`
+### 3.4. `EquivalenceClass.java`
 * **Vai trò:** Thể hiện Cây Khônng Gian Duyệt Lattice theo hướng phân lớp các chuỗi có **Cùng Tiền Tố (Prefix)**.
 * Khi hai thuộc tính chuỗi có chung một prefix mẹ, chúng ta chỉ cần chạy tổ hợp Nối (Join `IdList`) giữa chúng chứ không phải mang rà quét lại database ban đầu. Đây là hàm lõi đảm nhận logic đệ quy tìm kiếm DFS.
 
-### 2.5. `GenericObjectEditor.props`
+### 3.5. `GenericObjectEditor.props`
 * **Sự thay đổi:** File cơ bản của Weka giữ danh sách liệt kê các Class để hiển thị trên thanh thả xuống Dropdown ở giao diện Window. Đoạn mã `weka.associations.Spade` đã được thêm vào nhóm biến `weka.associations.Associator=\`.
 
 ---
 
-## 3. Tổng Quan Đơn Giản Thuật Toán SPADE
+## 4. Tổng Quan Đơn Giản Thuật Toán SPADE
 
 SPADE (M. Zaki, 2001) giải quyết bài toán khai thác chuỗi bằng cách khắc phục sự nặng nề trong I/O đĩa dính kèm theo phương pháp quen thuộc ở trước đó như Apriori All hay GSP. 
 
@@ -78,7 +89,7 @@ Trong khi GSP duyệt Database *Horizontal* qua nhiều vòng (đếm, băm, sin
 
 ---
 
-## 4. Hướng Dẫn Chạy Thử SPADE Trên Weka
+## 5. Hướng Dẫn Chạy Thử SPADE Trên Weka
 
 Đoạn lệnh Build Maven chuẩn đã chạy thành công và tạo file Jar đóng gói ở `/dist`.
 
