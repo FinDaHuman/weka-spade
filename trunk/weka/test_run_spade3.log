@@ -1,0 +1,422 @@
+﻿[INFO] Scanning for projects...
+[INFO] 
+[INFO] ------------------< nz.ac.waikato.cms.weka:weka-dev >-------------------
+[INFO] Building weka-dev 3.9.7-SNAPSHOT
+[INFO]   from pom.xml
+[INFO] --------------------------------[ jar ]---------------------------------
+[INFO] 
+[INFO] --- enforcer:1.0:enforce (enforce-maven) @ weka-dev ---
+[INFO] 
+[INFO] --- resources:3.3.1:resources (default-resources) @ weka-dev ---
+[INFO] Copying 736 resources from src\main\java to build\classes
+[INFO] Copying 24 resources from src\test\java to build\testcases
+[INFO] 
+[INFO] --- compiler:3.8.1:compile (default-compile) @ weka-dev ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 1625 source files to D:\Vs Code\Weka_SPADE_Demo\weka\trunk\weka\build\classes
+[INFO] /D:/Vs Code/Weka_SPADE_Demo/weka/trunk/weka/src/main/java/weka/gui/filters/AddUserFieldsCustomizer.java: Some input files use or override a deprecated API.
+[INFO] /D:/Vs Code/Weka_SPADE_Demo/weka/trunk/weka/src/main/java/weka/gui/filters/AddUserFieldsCustomizer.java: Recompile with -Xlint:deprecation for details.
+[INFO] /D:/Vs Code/Weka_SPADE_Demo/weka/trunk/weka/src/main/java/weka/core/Settings.java: Some input files use unchecked or unsafe operations.
+[INFO] /D:/Vs Code/Weka_SPADE_Demo/weka/trunk/weka/src/main/java/weka/core/Settings.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- resources:3.3.1:testResources (default-testResources) @ weka-dev ---
+[INFO] Copying 342 resources from src\test\resources to build\testcases
+[INFO] 
+[INFO] --- compiler:3.8.1:testCompile (default-testCompile) @ weka-dev ---
+[INFO] Changes detected - recompiling the module!
+[INFO] Compiling 261 source files to D:\Vs Code\Weka_SPADE_Demo\weka\trunk\weka\build\testcases
+[INFO] /D:/Vs Code/Weka_SPADE_Demo/weka/trunk/weka/src/test/java/weka/filters/AbstractFilterTest.java: D:\Vs Code\Weka_SPADE_Demo\weka\trunk\weka\src\test\java\weka\filters\AbstractFilterTest.java uses unchecked or unsafe operations.
+[INFO] /D:/Vs Code/Weka_SPADE_Demo/weka/trunk/weka/src/test/java/weka/filters/AbstractFilterTest.java: Recompile with -Xlint:unchecked for details.
+[INFO] 
+[INFO] --- surefire:2.22.2:test (default-test) @ weka-dev ---
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit-platform/2.22.2/surefire-junit-platform-2.22.2.pom
+Progress (1): 2.0 kB
+Progress (1): 3.9 kB
+Progress (1): 7.0 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit-platform/2.22.2/surefire-junit-platform-2.22.2.pom (7.0 kB at 17 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-launcher/1.3.1/junit-platform-launcher-1.3.1.pom
+Progress (1): 1.2 kB
+Progress (1): 2.2 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-launcher/1.3.1/junit-platform-launcher-1.3.1.pom (2.2 kB at 17 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.pom
+Progress (1): 1.2 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.pom (1.2 kB at 8.8 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-engine/1.3.1/junit-platform-engine-1.3.1.pom
+Progress (1): 1.2 kB
+Progress (1): 2.4 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-engine/1.3.1/junit-platform-engine-1.3.1.pom (2.4 kB at 18 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-commons/1.3.1/junit-platform-commons-1.3.1.pom
+Progress (1): 1.2 kB
+Progress (1): 2.0 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-commons/1.3.1/junit-platform-commons-1.3.1.pom (2.0 kB at 20 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.pom
+Progress (1): 1.2 kB
+Progress (1): 1.7 kB
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.pom (1.7 kB at 20 kB/s)
+Downloading from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-launcher/1.3.1/junit-platform-launcher-1.3.1.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-commons/1.3.1/junit-platform-commons-1.3.1.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-engine/1.3.1/junit-platform-engine-1.3.1.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar
+Downloading from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit-platform/2.22.2/surefire-junit-platform-2.22.2.jar
+Progress (1): 0.9/78 kB
+Progress (1): 2.3/78 kB
+Progress (1): 3.6/78 kB
+Progress (1): 5.0/78 kB
+Progress (1): 6.4/78 kB
+Progress (1): 7.7/78 kB
+Progress (1): 9.1/78 kB
+Progress (1): 10/78 kB 
+Progress (1): 12/78 kB
+Progress (1): 12/78 kB
+Progress (1): 14/78 kB
+Progress (1): 15/78 kB
+Progress (1): 16/78 kB
+Progress (1): 18/78 kB
+Progress (1): 19/78 kB
+Progress (1): 21/78 kB
+Progress (1): 22/78 kB
+Progress (1): 23/78 kB
+Progress (1): 25/78 kB
+Progress (1): 26/78 kB
+Progress (1): 27/78 kB
+Progress (1): 29/78 kB
+Progress (1): 30/78 kB
+Progress (1): 31/78 kB
+Progress (1): 33/78 kB
+Progress (1): 34/78 kB
+Progress (1): 36/78 kB
+Progress (1): 37/78 kB
+Progress (1): 38/78 kB
+Progress (1): 43/78 kB
+Progress (1): 47/78 kB
+Progress (1): 51/78 kB
+Progress (1): 55/78 kB
+Progress (1): 59/78 kB
+Progress (1): 64/78 kB
+Progress (1): 68/78 kB
+Progress (1): 72/78 kB
+Progress (1): 76/78 kB
+Progress (1): 78 kB   
+Progress (2): 78 kB | 0.9/2.2 kB
+Progress (2): 78 kB | 2.2 kB    
+Progress (3): 78 kB | 2.2 kB | 0.9/135 kB
+Progress (3): 78 kB | 2.2 kB | 2.3/135 kB
+Progress (3): 78 kB | 2.2 kB | 3.6/135 kB
+Progress (3): 78 kB | 2.2 kB | 5.0/135 kB
+Progress (3): 78 kB | 2.2 kB | 6.4/135 kB
+Progress (3): 78 kB | 2.2 kB | 7.7/135 kB
+Progress (3): 78 kB | 2.2 kB | 8.2/135 kB
+Progress (3): 78 kB | 2.2 kB | 9.6/135 kB
+Progress (3): 78 kB | 2.2 kB | 11/135 kB 
+Progress (4): 78 kB | 2.2 kB | 11/135 kB | 0.9/66 kB
+Progress (4): 78 kB | 2.2 kB | 12/135 kB | 0.9/66 kB
+Progress (4): 78 kB | 2.2 kB | 12/135 kB | 2.3/66 kB
+Progress (4): 78 kB | 2.2 kB | 14/135 kB | 2.3/66 kB
+Progress (4): 78 kB | 2.2 kB | 14/135 kB | 3.6/66 kB
+Progress (4): 78 kB | 2.2 kB | 15/135 kB | 3.6/66 kB
+Progress (4): 78 kB | 2.2 kB | 16/135 kB | 3.6/66 kB
+Progress (4): 78 kB | 2.2 kB | 16/135 kB | 5.0/66 kB
+Progress (4): 78 kB | 2.2 kB | 18/135 kB | 5.0/66 kB
+Progress (4): 78 kB | 2.2 kB | 18/135 kB | 6.4/66 kB
+Progress (4): 78 kB | 2.2 kB | 18/135 kB | 7.7/66 kB
+Progress (4): 78 kB | 2.2 kB | 19/135 kB | 7.7/66 kB
+Progress (4): 78 kB | 2.2 kB | 19/135 kB | 9.1/66 kB
+Progress (4): 78 kB | 2.2 kB | 21/135 kB | 9.1/66 kB
+Progress (4): 78 kB | 2.2 kB | 21/135 kB | 10/66 kB 
+Progress (4): 78 kB | 2.2 kB | 21/135 kB | 12/66 kB
+Progress (4): 78 kB | 2.2 kB | 22/135 kB | 12/66 kB
+Progress (4): 78 kB | 2.2 kB | 22/135 kB | 12/66 kB
+Progress (4): 78 kB | 2.2 kB | 23/135 kB | 12/66 kB
+Progress (4): 78 kB | 2.2 kB | 23/135 kB | 14/66 kB
+Progress (4): 78 kB | 2.2 kB | 25/135 kB | 14/66 kB
+Progress (4): 78 kB | 2.2 kB | 25/135 kB | 15/66 kB
+Progress (4): 78 kB | 2.2 kB | 26/135 kB | 15/66 kB
+Progress (4): 78 kB | 2.2 kB | 26/135 kB | 16/66 kB
+Progress (4): 78 kB | 2.2 kB | 27/135 kB | 16/66 kB
+Progress (4): 78 kB | 2.2 kB | 27/135 kB | 18/66 kB
+Progress (4): 78 kB | 2.2 kB | 27/135 kB | 19/66 kB
+Progress (4): 78 kB | 2.2 kB | 29/135 kB | 19/66 kB
+Progress (4): 78 kB | 2.2 kB | 29/135 kB | 21/66 kB
+Progress (4): 78 kB | 2.2 kB | 30/135 kB | 21/66 kB
+Progress (4): 78 kB | 2.2 kB | 30/135 kB | 22/66 kB
+Progress (4): 78 kB | 2.2 kB | 30/135 kB | 23/66 kB
+Progress (4): 78 kB | 2.2 kB | 31/135 kB | 23/66 kB
+Progress (4): 78 kB | 2.2 kB | 31/135 kB | 25/66 kB
+Progress (4): 78 kB | 2.2 kB | 33/135 kB | 25/66 kB
+Progress (4): 78 kB | 2.2 kB | 33/135 kB | 26/66 kB
+Progress (4): 78 kB | 2.2 kB | 34/135 kB | 26/66 kB
+Progress (4): 78 kB | 2.2 kB | 34/135 kB | 27/66 kB
+Progress (4): 78 kB | 2.2 kB | 36/135 kB | 27/66 kB
+Progress (4): 78 kB | 2.2 kB | 36/135 kB | 29/66 kB
+Progress (4): 78 kB | 2.2 kB | 36/135 kB | 30/66 kB
+Progress (4): 78 kB | 2.2 kB | 37/135 kB | 30/66 kB
+Progress (4): 78 kB | 2.2 kB | 37/135 kB | 31/66 kB
+Progress (4): 78 kB | 2.2 kB | 38/135 kB | 31/66 kB
+Progress (4): 78 kB | 2.2 kB | 38/135 kB | 33/66 kB
+Progress (4): 78 kB | 2.2 kB | 40/135 kB | 33/66 kB
+Progress (4): 78 kB | 2.2 kB | 40/135 kB | 34/66 kB
+Progress (4): 78 kB | 2.2 kB | 41/135 kB | 34/66 kB
+Progress (4): 78 kB | 2.2 kB | 42/135 kB | 34/66 kB
+Progress (4): 78 kB | 2.2 kB | 42/135 kB | 36/66 kB
+Progress (4): 78 kB | 2.2 kB | 44/135 kB | 36/66 kB
+Progress (4): 78 kB | 2.2 kB | 44/135 kB | 37/66 kB
+Progress (4): 78 kB | 2.2 kB | 45/135 kB | 37/66 kB
+Progress (4): 78 kB | 2.2 kB | 45/135 kB | 38/66 kB
+Progress (4): 78 kB | 2.2 kB | 47/135 kB | 38/66 kB
+Progress (4): 78 kB | 2.2 kB | 47/135 kB | 40/66 kB
+Progress (4): 78 kB | 2.2 kB | 47/135 kB | 41/66 kB
+Progress (4): 78 kB | 2.2 kB | 48/135 kB | 41/66 kB
+Progress (4): 78 kB | 2.2 kB | 48/135 kB | 42/66 kB
+Progress (4): 78 kB | 2.2 kB | 49/135 kB | 42/66 kB
+Progress (4): 78 kB | 2.2 kB | 49/135 kB | 44/66 kB
+Progress (4): 78 kB | 2.2 kB | 51/135 kB | 44/66 kB
+Progress (4): 78 kB | 2.2 kB | 51/135 kB | 45/66 kB
+Progress (4): 78 kB | 2.2 kB | 52/135 kB | 45/66 kB
+Progress (4): 78 kB | 2.2 kB | 52/135 kB | 47/66 kB
+Progress (4): 78 kB | 2.2 kB | 53/135 kB | 47/66 kB
+Progress (4): 78 kB | 2.2 kB | 53/135 kB | 48/66 kB
+Progress (4): 78 kB | 2.2 kB | 55/135 kB | 48/66 kB
+Progress (4): 78 kB | 2.2 kB | 55/135 kB | 49/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 49/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 51/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 52/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 53/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 55/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 59/66 kB
+Progress (4): 78 kB | 2.2 kB | 59/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 63/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 66/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 70/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 74/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 78/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 82/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 86/135 kB | 63/66 kB
+Progress (4): 78 kB | 2.2 kB | 90/135 kB | 63/66 kB
+Progress (5): 78 kB | 2.2 kB | 90/135 kB | 63/66 kB | 0.9/95 kB
+Progress (5): 78 kB | 2.2 kB | 95/135 kB | 63/66 kB | 0.9/95 kB
+Progress (5): 78 kB | 2.2 kB | 95/135 kB | 63/66 kB | 2.3/95 kB
+Progress (5): 78 kB | 2.2 kB | 95/135 kB | 63/66 kB | 3.6/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 3.6/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 5.0/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 6.4/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 7.7/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 8.2/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 9.6/95 kB
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 63/66 kB | 11/95 kB 
+Progress (5): 78 kB | 2.2 kB | 99/135 kB | 66 kB | 11/95 kB   
+Progress (5): 78 kB | 2.2 kB | 103/135 kB | 66 kB | 11/95 kB
+Progress (5): 78 kB | 2.2 kB | 103/135 kB | 66 kB | 12/95 kB
+Progress (5): 78 kB | 2.2 kB | 103/135 kB | 66 kB | 14/95 kB
+Progress (5): 78 kB | 2.2 kB | 107/135 kB | 66 kB | 14/95 kB
+Progress (5): 78 kB | 2.2 kB | 107/135 kB | 66 kB | 15/95 kB
+Progress (5): 78 kB | 2.2 kB | 107/135 kB | 66 kB | 16/95 kB
+Progress (5): 78 kB | 2.2 kB | 107/135 kB | 66 kB | 18/95 kB
+Progress (5): 78 kB | 2.2 kB | 107/135 kB | 66 kB | 19/95 kB
+Progress (5): 78 kB | 2.2 kB | 107/135 kB | 66 kB | 21/95 kB
+Progress (5): 78 kB | 2.2 kB | 112/135 kB | 66 kB | 21/95 kB
+Progress (5): 78 kB | 2.2 kB | 112/135 kB | 66 kB | 22/95 kB
+Progress (5): 78 kB | 2.2 kB | 112/135 kB | 66 kB | 23/95 kB
+Progress (5): 78 kB | 2.2 kB | 115/135 kB | 66 kB | 23/95 kB
+Progress (5): 78 kB | 2.2 kB | 115/135 kB | 66 kB | 25/95 kB
+Progress (5): 78 kB | 2.2 kB | 115/135 kB | 66 kB | 26/95 kB
+Progress (5): 78 kB | 2.2 kB | 115/135 kB | 66 kB | 27/95 kB
+Progress (5): 78 kB | 2.2 kB | 119/135 kB | 66 kB | 27/95 kB
+Progress (5): 78 kB | 2.2 kB | 119/135 kB | 66 kB | 29/95 kB
+Progress (5): 78 kB | 2.2 kB | 123/135 kB | 66 kB | 29/95 kB
+Progress (5): 78 kB | 2.2 kB | 123/135 kB | 66 kB | 30/95 kB
+Progress (5): 78 kB | 2.2 kB | 123/135 kB | 66 kB | 31/95 kB
+Progress (5): 78 kB | 2.2 kB | 123/135 kB | 66 kB | 33/95 kB
+Progress (5): 78 kB | 2.2 kB | 123/135 kB | 66 kB | 34/95 kB
+Progress (5): 78 kB | 2.2 kB | 123/135 kB | 66 kB | 36/95 kB
+Progress (5): 78 kB | 2.2 kB | 127/135 kB | 66 kB | 36/95 kB
+Progress (5): 78 kB | 2.2 kB | 127/135 kB | 66 kB | 37/95 kB
+Progress (5): 78 kB | 2.2 kB | 127/135 kB | 66 kB | 38/95 kB
+Progress (5): 78 kB | 2.2 kB | 132/135 kB | 66 kB | 38/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 38/95 kB    
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 40/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 41/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 42/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 44/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 45/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 47/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 48/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 49/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 51/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 52/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 53/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 55/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 59/95 kB
+Progress (5): 78 kB | 2.2 kB | 135 kB | 66 kB | 63/95 kB
+                                                        
+Downloaded from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-commons/1.3.1/junit-platform-commons-1.3.1.jar (78 kB at 437 kB/s)
+Progress (4): 2.2 kB | 135 kB | 66 kB | 67/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 72/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 76/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 80/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 84/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 89/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 93/95 kB
+Progress (4): 2.2 kB | 135 kB | 66 kB | 95 kB   
+                                             
+Downloading from central: https://repo.maven.apache.org/maven2/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.jar
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apache/maven/surefire/surefire-junit-platform/2.22.2/surefire-junit-platform-2.22.2.jar (66 kB at 260 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-engine/1.3.1/junit-platform-engine-1.3.1.jar (135 kB at 532 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/apiguardian/apiguardian-api/1.0.0/apiguardian-api-1.0.0.jar (2.2 kB at 8.2 kB/s)
+Downloaded from central: https://repo.maven.apache.org/maven2/org/junit/platform/junit-platform-launcher/1.3.1/junit-platform-launcher-1.3.1.jar (95 kB at 352 kB/s)
+Progress (1): 3.8/7.1 kB
+Progress (1): 7.1 kB    
+                    
+Downloaded from central: https://repo.maven.apache.org/maven2/org/opentest4j/opentest4j/1.1.1/opentest4j-1.1.1.jar (7.1 kB at 33 kB/s)
+[INFO] 
+[INFO] -------------------------------------------------------
+[INFO]  T E S T S
+[INFO] -------------------------------------------------------
+[INFO] Running weka.associations.SpadeBoundaryTest
+[ERROR] Tests run: 6, Failures: 0, Errors: 6, Skipped: 0, Time elapsed: 8.985 s <<< FAILURE! - in weka.associations.SpadeBoundaryTest
+[ERROR] testDatasetWithOneItem  Time elapsed: 8.969 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeBoundaryTest.testDatasetWithOneItem(SpadeBoundaryTest.java:65)
+
+[ERROR] testEmptyDataset  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeBoundaryTest.testEmptyDataset(SpadeBoundaryTest.java:38)
+
+[ERROR] testDatasetWithOneSequence  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeBoundaryTest.testDatasetWithOneSequence(SpadeBoundaryTest.java:49)
+
+[ERROR] testMinSupOne  Time elapsed: 0.003 s  <<< ERROR!
+java.lang.ArrayIndexOutOfBoundsException: 1
+	at weka.associations.SpadeBoundaryTest.testMinSupOne(SpadeBoundaryTest.java:104)
+
+[ERROR] testMinSupZero  Time elapsed: 0.001 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeBoundaryTest.testMinSupZero(SpadeBoundaryTest.java:90)
+
+[ERROR] testDatasetNoItemMeetsMinSup  Time elapsed: 0.001 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeBoundaryTest.testDatasetNoItemMeetsMinSup(SpadeBoundaryTest.java:80)
+
+[INFO] Running weka.associations.SpadeDeterminismTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.002 s <<< FAILURE! - in weka.associations.SpadeDeterminismTest
+[ERROR] testDeterminism  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeDeterminismTest.testDeterminism(SpadeDeterminismTest.java:83)
+
+[INFO] Running weka.associations.SpadeFunctionalTest
+[ERROR] Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in weka.associations.SpadeFunctionalTest
+[ERROR] test1SequenceMining  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeFunctionalTest.test1SequenceMining(SpadeFunctionalTest.java:117)
+
+[ERROR] testKSequenceMining  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeFunctionalTest.testKSequenceMining(SpadeFunctionalTest.java:168)
+
+[ERROR] test2SequenceMining  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeFunctionalTest.test2SequenceMining(SpadeFunctionalTest.java:147)
+
+[INFO] Running weka.associations.SpadeInternalAlgorithmTest
+[ERROR] Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0 s <<< FAILURE! - in weka.associations.SpadeInternalAlgorithmTest
+[ERROR] testEqualityVsTemporalJoin  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeInternalAlgorithmTest.testEqualityVsTemporalJoin(SpadeInternalAlgorithmTest.java:41)
+
+[ERROR] testDeepJoinLogic  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeInternalAlgorithmTest.testDeepJoinLogic(SpadeInternalAlgorithmTest.java:77)
+
+[ERROR] testAntiDoubleCount  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeInternalAlgorithmTest.testAntiDoubleCount(SpadeInternalAlgorithmTest.java:61)
+
+[INFO] Running weka.associations.SpadePropertyTest
+[ERROR] Tests run: 1, Failures: 0, Errors: 1, Skipped: 0, Time elapsed: 0.005 s <<< FAILURE! - in weka.associations.SpadePropertyTest
+[ERROR] testAntiMonotonicityProperty  Time elapsed: 0.005 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadePropertyTest.testAntiMonotonicityProperty(SpadePropertyTest.java:57)
+
+[INFO] Running weka.associations.SpadeRegressionTest
+[ERROR] Tests run: 4, Failures: 0, Errors: 4, Skipped: 0, Time elapsed: 0.004 s <<< FAILURE! - in weka.associations.SpadeRegressionTest
+[ERROR] testEventIDNotTreatedAsItem  Time elapsed: 0.001 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle numeric attributes!
+	at weka.associations.SpadeRegressionTest.testEventIDNotTreatedAsItem(SpadeRegressionTest.java:66)
+
+[ERROR] testLexicographicallySortedItemsAndDeterministicOutput  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle numeric attributes!
+	at weka.associations.SpadeRegressionTest.testLexicographicallySortedItemsAndDeterministicOutput(SpadeRegressionTest.java:124)
+
+[ERROR] testSupportDoesNotDoubleCountSameSID  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle numeric attributes!
+	at weka.associations.SpadeRegressionTest.testSupportDoesNotDoubleCountSameSID(SpadeRegressionTest.java:84)
+
+[ERROR] testJoinDoesNotProduceInvalidTemporalSequences  Time elapsed: 0.002 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle numeric attributes!
+	at weka.associations.SpadeRegressionTest.testJoinDoesNotProduceInvalidTemporalSequences(SpadeRegressionTest.java:101)
+
+[INFO] Running weka.associations.SpadeStressTest
+[ERROR] Tests run: 3, Failures: 0, Errors: 3, Skipped: 0, Time elapsed: 0.021 s <<< FAILURE! - in weka.associations.SpadeStressTest
+[ERROR] testDenseDatasetPatternExplosionWithLengthLimit  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeStressTest.testDenseDatasetPatternExplosionWithLengthLimit(SpadeStressTest.java:99)
+
+[ERROR] testSparseDatasetPruningAccuracy  Time elapsed: 0.021 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeStressTest.testSparseDatasetPruningAccuracy(SpadeStressTest.java:68)
+
+[ERROR] testDeepPatternJoinPerformanceAndCorrectness  Time elapsed: 0 s  <<< ERROR!
+weka.core.UnsupportedAttributeTypeException: weka.associations.Spade: Cannot handle relational attributes!
+	at weka.associations.SpadeStressTest.testDeepPatternJoinPerformanceAndCorrectness(SpadeStressTest.java:44)
+
+[INFO] 
+[INFO] Results:
+[INFO] 
+[ERROR] Errors: 
+[ERROR]   SpadeBoundaryTest.testDatasetNoItemMeetsMinSup:80 ╗ UnsupportedAttributeType w...
+[ERROR]   SpadeBoundaryTest.testDatasetWithOneItem:65 ╗ UnsupportedAttributeType weka.as...
+[ERROR]   SpadeBoundaryTest.testDatasetWithOneSequence:49 ╗ UnsupportedAttributeType wek...
+[ERROR]   SpadeBoundaryTest.testEmptyDataset:38 ╗ UnsupportedAttributeType weka.associat...
+[ERROR]   SpadeBoundaryTest.testMinSupOne:104 ╗ ArrayIndexOutOfBounds 1
+[ERROR]   SpadeBoundaryTest.testMinSupZero:90 ╗ UnsupportedAttributeType weka.associatio...
+[ERROR]   SpadeDeterminismTest.testDeterminism:83 ╗ UnsupportedAttributeType weka.associ...
+[ERROR]   SpadeFunctionalTest.test1SequenceMining:117 ╗ UnsupportedAttributeType weka.as...
+[ERROR]   SpadeFunctionalTest.test2SequenceMining:147 ╗ UnsupportedAttributeType weka.as...
+[ERROR]   SpadeFunctionalTest.testKSequenceMining:168 ╗ UnsupportedAttributeType weka.as...
+[ERROR]   SpadeInternalAlgorithmTest.testAntiDoubleCount:61 ╗ UnsupportedAttributeType w...
+[ERROR]   SpadeInternalAlgorithmTest.testDeepJoinLogic:77 ╗ UnsupportedAttributeType wek...
+[ERROR]   SpadeInternalAlgorithmTest.testEqualityVsTemporalJoin:41 ╗ UnsupportedAttributeType
+[ERROR]   SpadePropertyTest.testAntiMonotonicityProperty:57 ╗ UnsupportedAttributeType w...
+[ERROR]   SpadeRegressionTest.testEventIDNotTreatedAsItem:66 ╗ UnsupportedAttributeType ...
+[ERROR]   SpadeRegressionTest.testJoinDoesNotProduceInvalidTemporalSequences:101 ╗ UnsupportedAttributeType
+[ERROR]   SpadeRegressionTest.testLexicographicallySortedItemsAndDeterministicOutput:124 ╗ UnsupportedAttributeType
+[ERROR]   SpadeRegressionTest.testSupportDoesNotDoubleCountSameSID:84 ╗ UnsupportedAttributeType
+[ERROR]   SpadeStressTest.testDeepPatternJoinPerformanceAndCorrectness:44 ╗ UnsupportedAttributeType
+[ERROR]   SpadeStressTest.testDenseDatasetPatternExplosionWithLengthLimit:99 ╗ UnsupportedAttributeType
+[ERROR]   SpadeStressTest.testSparseDatasetPruningAccuracy:68 ╗ UnsupportedAttributeType
+[INFO] 
+[ERROR] Tests run: 21, Failures: 0, Errors: 21, Skipped: 0
+[INFO] 
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD FAILURE
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  41.631 s
+[INFO] Finished at: 2026-03-02T21:38:58+07:00
+[INFO] ------------------------------------------------------------------------
+[ERROR] Failed to execute goal org.apache.maven.plugins:maven-surefire-plugin:2.22.2:test (default-test) on project weka-dev: There are test failures.
+[ERROR] 
+[ERROR] Please refer to D:\Vs Code\Weka_SPADE_Demo\weka\trunk\weka\dist\surefire-reports for the individual test results.
+[ERROR] Please refer to dump files (if any exist) [date].dump, [date]-jvmRun[N].dump and [date].dumpstream.
+[ERROR] -> [Help 1]
+[ERROR] 
+[ERROR] To see the full stack trace of the errors, re-run Maven with the -e switch.
+[ERROR] Re-run Maven using the -X switch to enable full debug logging.
+[ERROR] 
+[ERROR] For more information about the errors and possible solutions, please read the following articles:
+[ERROR] [Help 1] http://cwiki.apache.org/confluence/display/MAVEN/MojoFailureException

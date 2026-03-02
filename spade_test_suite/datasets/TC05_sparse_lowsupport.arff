@@ -1,0 +1,27 @@
+% ============================================================
+% TEST CASE 05 - Sparse Dataset (Low Support / Pruning Test)
+% Format : Relational ARFF
+% Sequences : 10
+% Items : A-H (8 items, rarely co-occurring in same order)
+% Purpose : Test that pruning works correctly.
+%           Most 2-sequences should be pruned at min_sup=0.3
+% Expected at min_sup=0.3: only <{A}> is frequent (appears 5/10)
+%           <{C}>, <{E}> borderline (3/10 = 30%)
+% ============================================================
+@relation TC05_sparse_lowsupport
+
+@attribute sequence relational
+  @attribute items {A,B,C,D,E,F,G,H}
+@end sequence
+
+@data
+"A\nC\nE"
+"B\nD\nF"
+"A\nG\nH"
+"C\nE\nB"
+"F\nA\nD"
+"A\nC"
+"H\nG\nF"
+"B\nE\nC"
+"D\nA\nG"
+"A\nE\nH"

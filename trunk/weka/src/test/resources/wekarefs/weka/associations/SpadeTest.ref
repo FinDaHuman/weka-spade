@@ -1,0 +1,55 @@
+SPADE - Sequential PAttern Discovery using Equivalence classes
+===============================================================
+
+Minimum support: 0.5 (1 sequences)
+Total data sequences: 2
+Total frequent sequences found: 13
+Elapsed time: 0 ms
+
+Frequent Sequential Patterns:
+-----------------------------
+
+-- 1-sequences (count: 2)
+
+  <{Nominal2=att2val1}>   (support: 2, 100.0%)
+  <{Nominal2=att2val2}>   (support: 1, 50.0%)
+
+-- 2-sequences (count: 2)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+  <{Nominal2=att2val2}, {Nominal2=att2val2}>   (support: 1, 50.0%)
+
+-- 3-sequences (count: 2)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+  <{Nominal2=att2val2}, {Nominal2=att2val2}, {Nominal2=att2val2}>   (support: 1, 50.0%)
+
+-- 4-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+-- 5-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+-- 6-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+-- 7-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+-- 8-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+-- 9-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+-- 10-sequences (count: 1)
+
+  <{Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}, {Nominal2=att2val1}>   (support: 1, 50.0%)
+
+
