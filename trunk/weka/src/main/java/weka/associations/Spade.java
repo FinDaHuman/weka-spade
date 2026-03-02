@@ -290,6 +290,8 @@ public class Spade
     result.disableAll();
 
     result.enable(Capability.NOMINAL_ATTRIBUTES);
+    result.enable(Capability.NUMERIC_ATTRIBUTES);
+    result.enable(Capability.RELATIONAL_ATTRIBUTES);
     result.enable(Capability.NO_CLASS);
 
     return result;
@@ -323,12 +325,19 @@ public class Spade
     // Extract data items and build vertical DB
     Map<String, IdList> verticalDB = buildVerticalDB(data, seqIdAttr);
 
-    // Count total distinct sequences
+    // Count total distinct sequences depending on data format
     Set<Integer> distinctSids = new HashSet<Integer>();
-    for (int i = 0; i < data.numInstances(); i++) {
-      distinctSids.add((int) data.instance(i).value(seqIdAttr));
+    if (data.attribute(seqIdAttr).isRelationValued()) {
+      distinctSids = null; // We will use numInstances directly
+      m_TotalSequences = data.numInstances();
+    } else {
+      for (int i = 0; i < data.numInstances(); i++) {
+        if (!data.instance(i).isMissing(seqIdAttr)) {
+          distinctSids.add((int) data.instance(i).value(seqIdAttr));
+        }
+      }
+      m_TotalSequences = distinctSids.size();
     }
-    m_TotalSequences = distinctSids.size();
 
     long minSupportCount = Math.round(m_MinSupport * m_TotalSequences);
     if (minSupportCount < 1) minSupportCount = 1;
@@ -468,36 +477,75 @@ public class Spade
    */
   private Map<String, IdList> buildVerticalDB(Instances data, int seqIdAttr) {
     Map<String, IdList> verticalDB = new LinkedHashMap<String, IdList>();
+    boolean isRelationalSequence = data.attribute(seqIdAttr).isRelationValued();
 
-    // Track the event counter for each sequence
-    Map<Integer, Integer> seqEventCounter = new HashMap<Integer, Integer>();
-
-    for (int i = 0; i < data.numInstances(); i++) {
-      Instance inst = data.instance(i);
-      int sid = (int) inst.value(seqIdAttr);
-
-      // Increment event counter for this sequence
-      Integer eventCount = seqEventCounter.get(sid);
-      if (eventCount == null) {
-        eventCount = 0;
-      }
-      int eid = eventCount;
-      seqEventCounter.put(sid, eventCount + 1);
-
-      // For each attribute (except seqID), create item entries
-      for (int a = 0; a < data.numAttributes(); a++) {
-        if (a == seqIdAttr) continue;
-        if (inst.isMissing(a)) continue;
-
-        Attribute attr = data.attribute(a);
-        String itemName = attr.name() + "=" + attr.value((int) inst.value(a));
-
-        IdList idList = verticalDB.get(itemName);
-        if (idList == null) {
-          idList = new IdList();
-          verticalDB.put(itemName, idList);
+    if (isRelationalSequence) {
+      // Weka's native sequence format: each top-level instance is one sequence.
+      // The relational attribute contains the instances representing events.
+      for (int sid = 0; sid < data.numInstances(); sid++) {
+        Instance inst = data.instance(sid);
+        if (inst.isMissing(seqIdAttr)) continue;
+        
+        Instances sequenceData = inst.relationalValue(seqIdAttr);
+        // Each instance inside sequenceData represents an Event
+        for (int eid = 0; eid < sequenceData.numInstances(); eid++) {
+          Instance eventInst = sequenceData.instance(eid);
+          // Items are attributes inside this event instance
+          for (int a = 0; a < sequenceData.numAttributes(); a++) {
+            if (eventInst.isMissing(a)) continue;
+            Attribute attr = sequenceData.attribute(a);
+            String itemName = attr.name() + "=";
+            if (attr.isNominal() || attr.isString()) {
+              itemName += eventInst.stringValue(a);
+            } else {
+              itemName += Utils.doubleToString(eventInst.value(a), 4);
+            }
+            
+            IdList idList = verticalDB.get(itemName);
+            if (idList == null) {
+              idList = new IdList();
+              verticalDB.put(itemName, idList);
+            }
+            idList.addEntry(sid, eid);
+          }
         }
-        idList.addEntry(sid, eid);
+      }
+    } else {
+      // Horizontal flat format: requires an explicit seqID and tracks event appearances.
+      Map<Integer, Integer> seqEventCounter = new HashMap<Integer, Integer>();
+      for (int i = 0; i < data.numInstances(); i++) {
+        Instance inst = data.instance(i);
+        if (inst.isMissing(seqIdAttr)) continue;
+        int sid = (int) inst.value(seqIdAttr);
+
+        // Increment event counter for this sequence
+        Integer eventCount = seqEventCounter.get(sid);
+        if (eventCount == null) {
+          eventCount = 0;
+        }
+        int eid = eventCount;
+        seqEventCounter.put(sid, eventCount + 1);
+
+        // For each attribute (except seqID), create item entries
+        for (int a = 0; a < data.numAttributes(); a++) {
+          if (a == seqIdAttr) continue;
+          if (inst.isMissing(a)) continue;
+
+          Attribute attr = data.attribute(a);
+          String itemName = attr.name() + "=";
+          if (attr.isNominal() || attr.isString()) {
+            itemName += inst.stringValue(a);
+          } else {
+            itemName += Utils.doubleToString(inst.value(a), 4);
+          }
+
+          IdList idList = verticalDB.get(itemName);
+          if (idList == null) {
+            idList = new IdList();
+            verticalDB.put(itemName, idList);
+          }
+          idList.addEntry(sid, eid);
+        }
       }
     }
 
