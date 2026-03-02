@@ -1,0 +1,37 @@
+@relation sequential_data
+
+@attribute sequenceID {seq1,seq2,seq3,seq4,seq5,seq6,seq7,seq8,seq9,seq10}
+@attribute item1 {A,B,C,D}
+@attribute item2 {X,Y,Z}
+
+@data
+seq1,A,X
+seq1,B,Y
+seq1,C,Z
+seq2,A,X
+seq2,B,Y
+seq2,D,Z
+seq3,A,X
+seq3,C,Y
+seq3,B,Z
+seq4,B,X
+seq4,A,Y
+seq4,C,Z
+seq5,A,X
+seq5,B,Y
+seq5,C,Z
+seq6,A,X
+seq6,B,Y
+seq6,D,Z
+seq7,A,X
+seq7,B,Z
+seq7,C,Y
+seq8,A,X
+seq8,B,Y
+seq8,C,Z
+seq9,A,Y
+seq9,B,X
+seq9,C,Z
+seq10,A,X
+seq10,B,Y
+seq10,D,Z
