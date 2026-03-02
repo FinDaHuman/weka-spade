@@ -296,6 +296,9 @@ public class Spade
     result.enable(Capability.NOMINAL_ATTRIBUTES);
     result.enable(Capability.MISSING_VALUES);
     result.enable(Capability.NO_CLASS);
+    result.enable(Capability.NUMERIC_ATTRIBUTES);
+    result.enable(Capability.RELATIONAL_ATTRIBUTES);
+    result.setMinimumNumberInstances(0);
 
     return result;
   }
@@ -466,6 +469,54 @@ public class Spade
       System.out.println("SPADE: Elapsed time = " + m_ElapsedTime + " ms");
     }
   }
+
+  /**
+   * Helper for testing: get all frequent sequences.
+   *
+   * @return list of frequent sequences
+   */
+  public List<Sequence> getFrequentSequences() {
+    List<Sequence> all = new ArrayList<Sequence>();
+    if (m_FrequentSequences != null) {
+      for (List<Sequence> seqs : m_FrequentSequences.values()) {
+        all.addAll(seqs);
+      }
+    }
+    return all;
+  }
+
+  /**
+ * Helper for testing: get support count for a sequence.
+ *
+ * @param s the sequence
+ * @return the support count
+ */
+/**
+ * Helper for testing: get support count for a sequence.
+ *
+ * @param s the sequence
+ * @return the support count
+ */
+public int getSupport(Sequence s) {
+  if (s == null) return 0;
+  
+  // Lookup in mined results
+  if (m_FrequentSequences != null) {
+    for (List<Sequence> list : m_FrequentSequences.values()) {
+      for (Sequence mined : list) {
+        if (mined.equals(s) && mined.getIdList() != null) {
+          return mined.getIdList().getSupport();
+        }
+      }
+    }
+  }
+
+  // Fallback
+  if (s.getIdList() != null && s.getIdList().size() > 0) {
+      return s.getIdList().getSupport();
+  }
+  return 0;
+}
 
   /**
    * Builds the vertical database (ID-Lists) from horizontal data.
