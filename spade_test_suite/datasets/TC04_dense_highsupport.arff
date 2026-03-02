@@ -1,0 +1,26 @@
+% ============================================================
+% TEST CASE 04 - Dense Dataset (High Support)
+% Format : Relational ARFF
+% Sequences : 10
+% Items : X, Y, Z, W  (all very frequent across sequences)
+% Purpose : Stress test - should generate MANY frequent patterns
+%           at any reasonable min_sup threshold
+% Expected: nearly all item combinations frequent at min_sup=0.5
+% ============================================================
+@relation TC04_dense_highsupport
+
+@attribute sequence relational
+  @attribute items {X,Y,Z,W}
+@end sequence
+
+@data
+"X\nY\nZ\nW"
+"X\nY\nZ"
+"X\nZ\nW"
+"Y\nZ\nW"
+"X\nY\nW"
+"X\nY\nZ\nW"
+"X\nZ"
+"Y\nZ\nW"
+"X\nY"
+"X\nY\nZ"

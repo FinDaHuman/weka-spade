@@ -1,0 +1,24 @@
+% ============================================================
+% TEST CASE 02 - Tiny Relational Format (CORRECT for Weka SPADE)
+% Format : Relational ARFF - each instance = 1 sequence
+% Sequences : 5 customers
+% Items : A, B, C, D
+% Each row in bag = 1 event (ordered by position top-to-bottom)
+% ============================================================
+@relation TC02_tiny_relational
+
+@attribute sequence relational
+  @attribute items {A,B,C,D}
+@end sequence
+
+@data
+% Customer 1: A -> B -> C
+"A\nB\nC"
+% Customer 2: A -> B -> D
+"A\nB\nD"
+% Customer 3: A -> B
+"A\nB"
+% Customer 4: B -> C
+"B\nC"
+% Customer 5: A -> C
+"A\nC"

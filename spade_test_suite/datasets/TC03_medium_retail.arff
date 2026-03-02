@@ -1,0 +1,29 @@
+% ============================================================
+% TEST CASE 03 - Medium Retail Dataset, Relational Format
+% Format : Relational ARFF
+% Sequences : 15 customers, 2-4 purchases each
+% Domain : Retail (Bread, Milk, Butter, Eggs, Juice, Coffee)
+% Item encoding: BR=Bread, MK=Milk, BT=Butter, EG=Eggs, JC=Juice, CF=Coffee
+% ============================================================
+@relation TC03_medium_retail
+
+@attribute sequence relational
+  @attribute product {BR,MK,BT,EG,JC,CF}
+@end sequence
+
+@data
+"BR\nMK\nBT"
+"BR\nEG\nMK"
+"MK\nCF\nJC"
+"BR\nMK\nCF"
+"EG\nBT\nMK"
+"BR\nJC\nCF"
+"MK\nBT"
+"BR\nEG\nBT\nMK"
+"CF\nJC\nBR"
+"BR\nMK\nJC"
+"EG\nMK\nCF"
+"BR\nBT\nCF"
+"MK\nEG\nBR"
+"JC\nCF"
+"BR\nMK\nEG\nCF"

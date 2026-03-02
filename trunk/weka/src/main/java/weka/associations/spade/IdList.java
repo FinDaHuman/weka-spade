@@ -161,26 +161,21 @@ public class IdList implements Serializable {
       } else if (sid1 > sid2) {
         j++;
       } else {
-        // Same SID: find all pairs where eid2 > eid1
-        // Collect all entries from 'other' with this SID
-        int jStart = j;
+        // Same SID: find the minimum EID in 'this' for this SID
+        int minEid1 = this.getEid(i);
+        while (i < this.size() && this.getSid(i) == sid1) {
+          if (this.getEid(i) < minEid1) {
+            minEid1 = this.getEid(i);
+          }
+          i++;
+        }
+        // Collect all distinct (SID, EID2) from 'other' where EID2 > minEid1
         while (j < other.size() && other.getSid(j) == sid1) {
+          if (other.getEid(j) > minEid1) {
+            result.addEntry(sid1, other.getEid(j));
+          }
           j++;
         }
-        // For each entry in 'this' with sid1
-        int iCur = i;
-        while (iCur < this.size() && this.getSid(iCur) == sid1) {
-          int eid1 = this.getEid(iCur);
-          for (int k = jStart; k < j; k++) {
-            int eid2 = other.getEid(k);
-            if (eid2 > eid1) {
-              result.addEntry(sid1, eid2);
-            }
-          }
-          iCur++;
-        }
-        // Advance i past this SID group
-        i = iCur;
       }
     }
     return result;

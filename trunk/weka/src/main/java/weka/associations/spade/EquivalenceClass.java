@@ -103,23 +103,25 @@ public class EquivalenceClass implements Serializable {
    * @param minSupportCount the minimum support count threshold
    * @param allFrequentSequences output list to collect all frequent sequences
    * @param debug whether to print debug info
+   * @param maxPatternLength maximum pattern length (k in k-sequence)
    */
   public void enumerateFrequentSequences(long minSupportCount,
-      List<Sequence> allFrequentSequences, boolean debug) {
+      List<Sequence> allFrequentSequences, boolean debug, int maxPatternLength) {
 
     // For each pair of atoms in this equivalence class
     for (int i = 0; i < m_Members.size(); i++) {
       Sequence si = m_Members.get(i);
       
+      // Check if extending si would exceed max pattern length
+      if (si.itemCount() >= maxPatternLength) {
+        continue;
+      }
+
       // Create new equivalence class with si as prefix
       EquivalenceClass newEqClass = new EquivalenceClass(si);
 
       for (int j = i; j < m_Members.size(); j++) {
         Sequence sj = m_Members.get(j);
-
-        // Determine join type based on atom types
-        boolean si_isSeqExt = si.isSequenceExtension();
-        boolean sj_isSeqExt = sj.isSequenceExtension();
 
         String lastItemI = si.getLastItem();
         String lastItemJ = sj.getLastItem();
@@ -142,8 +144,6 @@ public class EquivalenceClass implements Serializable {
           if (reverseJoinedList.getSupport() >= minSupportCount) {
             Sequence newSeq = sj.sequenceExtend(lastItemI);
             newSeq.setIdList(reverseJoinedList);
-            // Only add to sj's equivalence class (will be processed separately)
-            // Add to all frequent sequences
             allFrequentSequences.add(newSeq);
           }
         }
@@ -175,7 +175,7 @@ public class EquivalenceClass implements Serializable {
       // Recursively enumerate from the new equivalence class
       if (newEqClass.size() > 0) {
         newEqClass.enumerateFrequentSequences(minSupportCount,
-            allFrequentSequences, debug);
+            allFrequentSequences, debug, maxPatternLength);
       }
     }
   }

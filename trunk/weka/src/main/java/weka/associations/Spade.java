@@ -117,6 +117,9 @@ public class Spade
   /** The attribute index for the data sequence ID (0-based internally) */
   protected int m_DataSeqID = 0;
 
+  /** Maximum pattern length (k in k-sequence) to prevent combinatorial explosion */
+  protected int m_MaxPatternLength = 10;
+
   /** Whether to run in debug mode */
   protected boolean m_Debug = false;
 
@@ -277,6 +280,7 @@ public class Spade
   protected void resetOptions() {
     m_MinSupport = 0.5;
     m_DataSeqID = 0;
+    m_MaxPatternLength = 10;
     m_Debug = false;
   }
 
@@ -290,8 +294,7 @@ public class Spade
     result.disableAll();
 
     result.enable(Capability.NOMINAL_ATTRIBUTES);
-    result.enable(Capability.NUMERIC_ATTRIBUTES);
-    result.enable(Capability.RELATIONAL_ATTRIBUTES);
+    result.enable(Capability.MISSING_VALUES);
     result.enable(Capability.NO_CLASS);
 
     return result;
@@ -442,7 +445,7 @@ public class Spade
     List<Sequence> longerSequences = new ArrayList<Sequence>();
     for (EquivalenceClass eqClass : eqClasses) {
       eqClass.enumerateFrequentSequences(minSupportCount,
-          longerSequences, m_Debug);
+          longerSequences, m_Debug, m_MaxPatternLength);
     }
 
     // Group longer sequences by length
