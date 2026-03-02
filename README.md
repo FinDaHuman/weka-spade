@@ -23,17 +23,18 @@ Việc tích hợp chủ yếu tạo ra cấu trúc mã nguồn ở package mớ
 
 ### Các File Thêm Mới ([NEW])
 
-1. `src/main/java/weka/associations/Spade.java`
-2. `src/main/java/weka/associations/spade/IdList.java`
-3. `src/main/java/weka/associations/spade/Element.java`
-4. `src/main/java/weka/associations/spade/Sequence.java`
-5. `src/main/java/weka/associations/spade/EquivalenceClass.java`
-6. `src/test/java/weka/associations/SpadeTest.java`
-7. `src/main/java/weka/associations/spade/sample_sequential.arff` (File dữ liệu mẫu)
+1. `trunk/weka/src/main/java/weka/associations/Spade.java`
+2. `trunk/weka/src/main/java/weka/associations/spade/IdList.java`
+3. `trunk/weka/src/main/java/weka/associations/spade/Element.java`
+4. `trunk/weka/src/main/java/weka/associations/spade/Sequence.java`
+5. `trunk/weka/src/main/java/weka/associations/spade/EquivalenceClass.java`
+6. `trunk/weka/src/main/java/weka/associations/spade/sample_sequential.arff`
+7. `trunk/weka/src/test/java/weka/associations/SpadeTest.java`
 
 ### Các File Chỉnh Sửa ([MODIFIED])
 
-1. `src/main/java/weka/gui/GenericObjectEditor.props`
+1. `trunk/weka/src/main/java/weka/gui/GenericObjectEditor.props` (Thêm thuật toán SPADE vào danh sách sổ xuống GUI)
+2. `trunk/weka/src/main/java/weka/core/Attribute.java` (Sắp xếp / Thêm hỗ trợ kiểm tra linh hoạt cho cấu trúc Relational)
 
 ---
 
@@ -105,6 +106,50 @@ $cp = "dist\weka-dev-3.9.7-SNAPSHOT.jar"; Get-ChildItem lib\*.jar | ForEach-Obje
 ```
 
 1. Ở giao diện `Chooser`, chọn nút **Explorer**.
-2. Ở tab `Preprocess` bấm **Open file...**, chọn File sample `.arff` (vd file `sample_sequential.arff` ở đường dẫn `src/main/java/weka/associations/spade/sample_sequential.arff`).
-3. Chuyển qua tab **Associate** → Ở ô Associator (thường đang là `Apriori`), click vô nút **Choose** → Cuộn xuống chọn **Spade**.
-4. Chọn xong, bấm vô "chữ (Textbox)" của thuật Toán để cấu hình tham số như `minSupport` hay `dataSeqID`. Bấm **Start** để khai thác kết quả!
+2. Ở tab `Preprocess` bấm **Open file...**, chọn File dữ liệu mẫu (ví dụ file `sample_sequential.arff` ở đường dẫn `trunk/weka/src/main/java/weka/associations/spade/sample_sequential.arff`).
+3. Chuyển qua tab **Associate** → Ở ô Associator, click vô nút **Choose** → Cuộn xuống chọn **Spade**.
+4. Cấu hình tham số (như `MinSupport` và `DataSeqID`) trong Textbox thuật toán. Bấm **Start** để khai thác kết quả!
+
+---
+
+### Các Định Dạng Dữ Liệu ARFF Hỗ Trợ
+
+SPADE trong Weka hỗ trợ song song 2 định dạng file tiêu chuẩn:
+
+#### 1. Weka Native Sequence Format (Relational Attribute)
+Đây là chuẩn lưu trữ chuỗi ưu việt nhất của Weka hiện tại, sử dụng cờ `@attribute ... relational`. 
+Mỗi "Hàng" chính (Instance) là một Chuỗi (Sequence). Bên trong Sequence đó tiếp tục chứa các Hàng Phụ (Event/Itemset).
+* **Cấu hình SPADE:** Bạn không cần set `DataSeqID`. Thuật toán sẽ tự động dò tìm cấu trúc `relational` để nạp dữ liệu.
+
+**Ví dụ cấu trúc Relational:**
+```arff
+@relation complex_sequential_spade
+
+@attribute sequence relational
+    @attribute item numeric
+@end sequence
+
+@data
+"1\n2\n5\n\n3\n4\n\n6"
+"1\n3\n\n2\n4\n5\n\n6"
+```
+
+#### 2. Flat / Horizontal Format (Explicit Sequence ID)
+Định dạng dạng bảng Excel / RDBMS truyền thống. Mỗi dòng lưu một mặt hàng tương ứng với 1 Sự kiện.
+Bắt buộc phải có 1 cột mã hóa `SequenceID` (Mã số hóa đơn, Mã khách hàng) để gom nhóm các hàng rời rạc lại với nhau. Cột này thường được cấu hình bằng tham số `DataSeqID` trong GUI (Mặc định là cột 1).
+
+**Ví dụ cấu trúc Flat:**
+```arff
+@relation sequential_data
+
+@attribute sequenceID numeric
+@attribute eventID numeric
+@attribute item1 {A,B,C,D}
+
+@data
+1,1,A
+1,2,B
+1,3,C
+2,1,A
+2,2,B
+```
