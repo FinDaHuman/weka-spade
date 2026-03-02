@@ -1,0 +1,81 @@
+SPADE - Sequential PAttern Discovery using Equivalence classes
+===============================================================
+
+Minimum support: 0.3 (3 sequences)
+Total data sequences: 10
+Total frequent sequences found: 53
+Elapsed time: 0 ms
+
+Frequent Sequential Patterns:
+-----------------------------
+
+-- 1-sequences (count: 7)
+
+  <{item1=A}>   (support: 10, 100.0%)
+  <{item1=B}>   (support: 10, 100.0%)
+  <{item1=C}>   (support: 7, 70.0%)
+  <{item1=D}>   (support: 3, 30.0%)
+  <{item2=X}>   (support: 10, 100.0%)
+  <{item2=Y}>   (support: 10, 100.0%)
+  <{item2=Z}>   (support: 10, 100.0%)
+
+-- 2-sequences (count: 20)
+
+  <{item1=A}, {item1=B}>   (support: 9, 90.0%)
+  <{item1=A}, {item1=C}>   (support: 7, 70.0%)
+  <{item1=A}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=A, item2=X}>   (support: 8, 80.0%)
+  <{item1=A}, {item2=Y}>   (support: 8, 80.0%)
+  <{item1=A}, {item2=Z}>   (support: 10, 100.0%)
+  <{item1=B}, {item1=C}>   (support: 6, 60.0%)
+  <{item1=B}, {item1=D}>   (support: 3, 30.0%)
+  <{item2=X}, {item1=B}>   (support: 8, 80.0%)
+  <{item1=B, item2=Y}>   (support: 6, 60.0%)
+  <{item1=B}, {item2=Z}>   (support: 8, 80.0%)
+  <{item2=X}, {item1=C}>   (support: 7, 70.0%)
+  <{item2=Y}, {item1=C}>   (support: 5, 50.0%)
+  <{item1=C, item2=Z}>   (support: 5, 50.0%)
+  <{item2=X}, {item1=D}>   (support: 3, 30.0%)
+  <{item2=Y}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=D, item2=Z}>   (support: 3, 30.0%)
+  <{item2=X}, {item2=Y}>   (support: 9, 90.0%)
+  <{item2=X}, {item2=Z}>   (support: 10, 100.0%)
+  <{item2=Y}, {item2=Z}>   (support: 9, 90.0%)
+
+-- 3-sequences (count: 20)
+
+  <{item1=A}, {item1=B}, {item1=C}>   (support: 5, 50.0%)
+  <{item1=A}, {item1=B}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=A, item2=X}, {item1=B}>   (support: 8, 80.0%)
+  <{item1=A}, {item1=B, item2=Y}>   (support: 6, 60.0%)
+  <{item1=A}, {item1=B}, {item2=Z}>   (support: 7, 70.0%)
+  <{item1=A, item2=X}, {item1=C}>   (support: 5, 50.0%)
+  <{item1=A}, {item2=Y}, {item1=C}>   (support: 3, 30.0%)
+  <{item1=A}, {item1=C, item2=Z}>   (support: 5, 50.0%)
+  <{item1=A, item2=X}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=A}, {item2=Y}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=A}, {item1=D, item2=Z}>   (support: 3, 30.0%)
+  <{item1=A, item2=X}, {item2=Y}>   (support: 8, 80.0%)
+  <{item1=A, item2=X}, {item2=Z}>   (support: 8, 80.0%)
+  <{item1=A}, {item2=Y}, {item2=Z}>   (support: 7, 70.0%)
+  <{item1=B, item2=Y}, {item1=C}>   (support: 3, 30.0%)
+  <{item1=B}, {item1=C, item2=Z}>   (support: 5, 50.0%)
+  <{item1=B, item2=Y}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=B}, {item1=D, item2=Z}>   (support: 3, 30.0%)
+  <{item1=B, item2=Y}, {item2=Z}>   (support: 6, 60.0%)
+  <{item2=X}, {item2=Y}, {item2=Z}>   (support: 8, 80.0%)
+
+-- 4-sequences (count: 6)
+
+  <{item1=A}, {item1=B, item2=Y}, {item1=C}>   (support: 3, 30.0%)
+  <{item1=A}, {item1=B}, {item1=C, item2=Z}>   (support: 4, 40.0%)
+  <{item1=A}, {item1=B, item2=Y}, {item1=D}>   (support: 3, 30.0%)
+  <{item1=A}, {item1=B}, {item1=D, item2=Z}>   (support: 3, 30.0%)
+  <{item1=A}, {item1=B, item2=Y}, {item2=Z}>   (support: 6, 60.0%)
+  <{item1=A, item2=X}, {item2=Y}, {item2=Z}>   (support: 7, 70.0%)
+
+
+=== Evaluation ===
+
+Elapsed time: 0.064s
+

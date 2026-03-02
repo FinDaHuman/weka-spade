@@ -1,0 +1,28 @@
+% ============================================================
+% TEST CASE 06 - Long Sequences (Deep Pattern Mining)
+% Format : Relational ARFF
+% Sequences : 6, each with 5-6 events
+% Items : P1-P6 (process steps in order)
+% Purpose : Test ability to mine patterns of length 4+
+%           Validates that SPADE doesn't truncate long patterns
+% Domain : Process mining (ordered workflow steps)
+% ============================================================
+@relation TC06_long_sequences
+
+@attribute sequence relational
+  @attribute step {P1,P2,P3,P4,P5,P6}
+@end sequence
+
+@data
+% Full pipeline
+"P1\nP2\nP3\nP4\nP5\nP6"
+% Missing P6
+"P1\nP2\nP3\nP4\nP5"
+% Skips P4
+"P1\nP2\nP3\nP5\nP6"
+% Starts at P2
+"P2\nP3\nP4\nP5\nP6"
+% Skips P2
+"P1\nP3\nP4\nP5\nP6"
+% Skips P3
+"P1\nP2\nP4\nP5\nP6"

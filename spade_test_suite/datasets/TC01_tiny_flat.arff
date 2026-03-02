@@ -1,0 +1,27 @@
+% ============================================================
+% TEST CASE 01 - Tiny Flat Format
+% Format : 3-column flat (sequenceID, eventID, item)
+% Sequences : 5
+% Items : A, B, C, D
+% NOTE: Known issue - Weka SPADE treats eventID as item.
+%       Use this file to observe/document the bug behavior.
+% ============================================================
+@relation TC01_tiny_flat
+
+@attribute sequenceID numeric
+@attribute eventID numeric
+@attribute items {A,B,C,D}
+
+@data
+1,10,A
+1,20,B
+1,30,C
+2,10,A
+2,20,B
+2,30,D
+3,10,A
+3,20,B
+4,10,B
+4,20,C
+5,10,A
+5,20,C
