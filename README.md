@@ -36,7 +36,7 @@ Quan trọng hơn, việc tích hợp này được thực hiện bằng cách *
 * **Tổ chức mã nguồn chuẩn hệ thống:** Mã nguồn được đặt trực tiếp trong package `weka.associations`, tuân thủ cấu trúc kế thừa và kiến trúc nội bộ của framework.
 * **Biên dịch nguyên khối:** Khi build toàn dự án bằng Maven (`mvn clean package`), SPADE được compile cùng toàn bộ lõi Weka và đóng gói chung trong file thực thi `weka-dev-*.jar`. Không cần cài đặt qua Weka Package Manager hay thao tác import bổ sung.
 
-Tóm lại, SPADE trong dự án này là một **thành phần lõi tích hợp hoàn chỉnh**, vận hành như một thuật toán mặc định của hệ sinh thái Weka, chứ không phải một tiện ích mở rộng bên ngoài.
+Tóm lại, SPADE trong dự án này là một **thành phần lõi tích hợp hoàn chỉnh**, vận hành như một thuật toán mặc định của hệ sinh thái Weka, chứ không phải một tiện ích mở rộng bên ngoài. (Xem thêm tại các file `spade_main_class.md`, `spade_reproduction_guild.md`, `spade_test_files.md`)
 
 ---
 
