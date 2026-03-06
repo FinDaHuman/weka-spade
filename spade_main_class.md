@@ -7,6 +7,7 @@
 ## Tại sao cần class này?
 
 Weka yêu cầu mọi thuật toán association phải **kế thừa** `AbstractAssociator`. Class này cung cấp:
+
 - Method `buildAssociations(Instances data)` — entry point chạy thuật toán
 - Giao diện GUI tự động từ `OptionHandler`
 - Kiểm tra dữ liệu input qua `Capabilities`
@@ -17,27 +18,27 @@ Weka yêu cầu mọi thuật toán association phải **kế thừa** `Abstract
 
 ```mermaid
 flowchart TD
-    A["Spade extends AbstractAssociator"] --> B["implements OptionHandler\n(de Weka GUI tu tao form nhap options)"]
-    A --> C["implements TechnicalInformationHandler\n(de hien reference paper trong GUI)"]
+    A["Spade extends AbstractAssociator"] --> B["implements OptionHandler\n(Để Weka GUI tự tạo form nhập options)"]
+    A --> C["implements TechnicalInformationHandler\n(để hiện reference paper trong GUI)"]
 ```
 
 ### Các thuộc tính quan trọng
 
-| Thuộc tính | Kiểu | Mặc định | Ý nghĩa |
-|------------|------|----------|---------|
-| `m_MinSupport` | double | 0.5 | Ngưỡng support tối thiểu (0 đến 1) |
-| `m_DataSeqID` | int | 0 | Cột nào chứa Sequence ID (0-based nội bộ) |
-| `m_MaxPatternLength` | int | 10 | Giới hạn độ dài pattern tránh tràn bộ nhớ |
-| `m_FrequentSequences` | Map | null | Kết quả: map từ độ dài k → danh sách k-sequences |
-| `m_TotalSequences` | int | 0 | Tổng số chuỗi distinct trong data |
+| Thuộc tính            | Kiểu  | Mặc định | Ý nghĩa                                                |
+| ----------------------- | ------ | ----------- | -------------------------------------------------------- |
+| `m_MinSupport`        | double | 0.5         | Ngưỡng support tối thiểu (0 đến 1)                 |
+| `m_DataSeqID`         | int    | 0           | Cột nào chứa Sequence ID (0-based nội bộ)           |
+| `m_MaxPatternLength`  | int    | 10          | Giới hạn độ dài pattern tránh tràn bộ nhớ       |
+| `m_FrequentSequences` | Map    | null        | Kết quả: map từ độ dài k → danh sách k-sequences |
+| `m_TotalSequences`    | int    | 0           | Tổng số chuỗi distinct trong data                     |
 
 ### Options (tham số dòng lệnh / GUI)
 
-| Flag | Ví dụ | Ý nghĩa |
-|------|-------|---------|
-| `-D` | `-D` | Bật debug mode |
-| `-S` | `-S 0.3` | Đặt min support = 30% |
-| `-I` | `-I 1` | Cột 1 (1-based) là Sequence ID |
+| Flag   | Ví dụ    | Ý nghĩa                        |
+| ------ | ---------- | -------------------------------- |
+| `-D` | `-D`     | Bật debug mode                  |
+| `-S` | `-S 0.3` | Đặt min support = 30%          |
+| `-I` | `-I 1`   | Cột 1 (1-based) là Sequence ID |
 
 > **Chú ý:** GUI dùng số **1-based** (cột 1, 2, 3...), nhưng nội bộ Java dùng **0-based**. Vì vậy `getDataSeqID()` trả về `m_DataSeqID + 1` và `setDataSeqID(value)` lưu `value - 1`.
 
@@ -84,12 +85,12 @@ Instance 1: Events = [{A,X}]           ← Chuỗi 1
 
 ### So sánh xử lý trong `buildVerticalDB()`
 
-| | Flat | Relational |
-|---|------|-----------|
-| **SID lấy từ đâu?** | Giá trị cột SeqID | Index của top-level instance |
-| **EID lấy từ đâu?** | Counter tự tăng mỗi row cùng SID | Index trong relational data |
-| **Bỏ qua cột nào?** | Cột SeqID (không mine nó) | Không cần bỏ qua |
-| **Tổng sequences?** | Đếm giá trị SeqID distinct | `data.numInstances()` |
+|                               | Flat                                 | Relational                    |
+| ----------------------------- | ------------------------------------ | ----------------------------- |
+| **SID lấy từ đâu?** | Giá trị cột SeqID                 | Index của top-level instance |
+| **EID lấy từ đâu?** | Counter tự tăng mỗi row cùng SID | Index trong relational data   |
+| **Bỏ qua cột nào?**  | Cột SeqID (không mine nó)         | Không cần bỏ qua           |
+| **Tổng sequences?**    | Đếm giá trị SeqID distinct       | `data.numInstances()`       |
 
 ---
 
@@ -97,16 +98,16 @@ Instance 1: Events = [{A,X}]           ← Chuỗi 1
 
 ```mermaid
 flowchart TD
-    A["Input: Instances data"] --> B["Kiem tra Capabilities"]
-    B --> C["buildVerticalDB:\nChuyen data thanh ID-Lists"]
-    C --> D["Dem tong so sequences"]
-    D --> E["Tinh minSupportCount = minSup * totalSeq"]
-    E --> F["Buoc 1: Tim freq 1-sequences\nGiu item co support >= minSup"]
-    F --> G["Sort theo ten item\nDe ket qua deterministic"]
-    G --> H["Buoc 2: Pairwise join\nTao freq 2-sequences"]
-    H --> I["Tao equivalence classes\nTu cac 2-sequences"]
-    I --> J["Buoc 3: De quy enumerate\nTim k-sequences voi k >= 3"]
-    J --> K["Nhom ket qua theo do dai k"]
+    A["Input: Instances data"] --> B["Kiểm tra Capabilities"]
+    B --> C["buildVerticalDB:\nChuyển data thành ID-Lists"]
+    C --> D["Đếm tổng sequences"]
+    D --> E["Tính minSupportCount = minSup * totalSeq"]
+    E --> F["Bước 1: Tìm freq 1-sequences\nGiữ item có support >= minSup"]
+    F --> G["Sort theo tên item\nĐể kết quả deterministic"]
+    G --> H["Bước 2: Pairwise join\nTao freq 2-sequences"]
+    H --> I["Tạo equivalence classes\nTừ các 2-sequences"]
+    I --> J["Bước 3: Đệ quy enumerate\nTìm k-sequences với k >= 3"]
+    J --> K["Nhóm kết quả theo độ dài k"]
 ```
 
 ### Chi tiết từng bước
@@ -159,6 +160,7 @@ Gộp tất cả values trong `m_FrequentSequences` (map) thành 1 list phẳng.
 ### `getSupport(Sequence s)` — Tìm support của 1 sequence
 
 Logic lookup:
+
 1. Duyệt qua `m_FrequentSequences` → tìm sequence `equals(s)` → trả về `idList.getSupport()`
 2. Nếu không tìm thấy trong kết quả → fallback: dùng IdList của chính `s`
 3. Cuối cùng: trả về 0
@@ -168,6 +170,7 @@ Logic lookup:
 ### `toString()` — Hiển thị kết quả
 
 Format output:
+
 ```
 SPADE - Sequential PAttern Discovery using Equivalence classes
 ===============================================================
@@ -190,13 +193,13 @@ Frequent Sequential Patterns:
 
 ## Tóm tắt: Spade.java làm gì?
 
-| Phần | Dòng | Vai trò |
-|------|------|---------|
-| Constructor + Options | 1-285 | Weka integration: tham số, reset, parse CLI |
-| Capabilities | 292-304 | Khai báo loại data được chấp nhận |
-| `buildAssociations()` | 313-471 | **Flow chính:** 4 bước mining |
-| `getFrequentSequences()` / `getSupport()` | 478-519 | API cho test/external access |
-| `buildVerticalDB()` | 532-607 | Chuyển data ngang → dọc |
-| `toString()` | 614-648 | Format kết quả cho GUI |
-| Bean properties | 650-740 | Getter/setter cho GUI Weka |
-| `main()` | 747-749 | Entry point chạy từ CLI |
+| Phần                                         | Dòng   | Vai trò                                     |
+| --------------------------------------------- | ------- | -------------------------------------------- |
+| Constructor + Options                         | 1-285   | Weka integration: tham số, reset, parse CLI |
+| Capabilities                                  | 292-304 | Khai báo loại data được chấp nhận     |
+| `buildAssociations()`                       | 313-471 | **Flow chính:** 4 bước mining       |
+| `getFrequentSequences()` / `getSupport()` | 478-519 | API cho test/external access                 |
+| `buildVerticalDB()`                         | 532-607 | Chuyển data ngang → dọc                   |
+| `toString()`                                | 614-648 | Format kết quả cho GUI                     |
+| Bean properties                               | 650-740 | Getter/setter cho GUI Weka                   |
+| `main()`                                    | 747-749 | Entry point chạy từ CLI                    |

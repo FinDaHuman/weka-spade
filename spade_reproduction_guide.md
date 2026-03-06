@@ -12,11 +12,11 @@
 
 ### So sánh với Apriori (đã có sẵn trong Weka)
 
-| | Apriori | SPADE |
-|---|---------|-------|
-| **Tìm gì?** | Tập item xuất hiện cùng nhau (không có thứ tự) | Chuỗi item có **thứ tự thời gian** |
-| **Ví dụ** | {Bánh mì, Sữa} thường mua cùng lúc | Bánh mì → Sữa → Trứng (mua theo thứ tự) |
-| **Database format** | Horizontal (mỗi row = 1 transaction) | **Vertical** (mỗi item = danh sách vị trí xuất hiện) |
+|                           | Apriori                                                | SPADE                                                            |
+| ------------------------- | ------------------------------------------------------ | ---------------------------------------------------------------- |
+| **Tìm gì?**       | Tập item xuất hiện cùng nhau (không có thứ tự) | Chuỗi item có**thứ tự thời gian**                     |
+| **Ví dụ**         | {Bánh mì, Sữa} thường mua cùng lúc              | Bánh mì → Sữa → Trứng (mua theo thứ tự)                  |
+| **Database format** | Horizontal (mỗi row = 1 transaction)                  | **Vertical** (mỗi item = danh sách vị trí xuất hiện) |
 
 ---
 
@@ -26,23 +26,23 @@
 
 ```mermaid
 flowchart LR
-    A["1. Tao code thuat toan"] --> B["2. Dang ky vao GUI"]
-    B --> C["3. Them dependencies"]
-    C --> D["4. Viet tests"]
+    A["1. Tạo code thuật toán"] --> B["2. Đăng ký vào GUI"]
+    B --> C["3. Thêm dependencies"]
+    C --> D["4. Viết tests"]
 ```
 
 ### Bảng tổng hợp tất cả thay đổi
 
-| Loại | File | Vì sao cần? |
-|------|------|-------------|
-| **SỬA** | `pom.xml` | Thêm thư viện JUnit 5 để chạy test |
-| **SỬA** | `GenericObjectEditor.props` | Đăng ký SPADE để hiện trong GUI Weka |
-| **MỚI** | `Spade.java` | Class chính - thuật toán SPADE |
-| **MỚI** | `spade/Element.java` | Đại diện cho 1 nhóm item cùng thời điểm |
-| **MỚI** | `spade/IdList.java` | Cấu trúc dữ liệu dọc - trái tim của SPADE |
-| **MỚI** | `spade/Sequence.java` | Đại diện cho 1 chuỗi có thứ tự |
+| Loại          | File                            | Vì sao cần?                                      |
+| -------------- | ------------------------------- | -------------------------------------------------- |
+| **SỬA** | `pom.xml`                     | Thêm thư viện JUnit 5 để chạy test           |
+| **SỬA** | `GenericObjectEditor.props`   | Đăng ký SPADE để hiện trong GUI Weka         |
+| **MỚI** | `Spade.java`                  | Class chính - thuật toán SPADE                  |
+| **MỚI** | `spade/Element.java`          | Đại diện cho 1 nhóm item cùng thời điểm    |
+| **MỚI** | `spade/IdList.java`           | Cấu trúc dữ liệu dọc - trái tim của SPADE   |
+| **MỚI** | `spade/Sequence.java`         | Đại diện cho 1 chuỗi có thứ tự              |
 | **MỚI** | `spade/EquivalenceClass.java` | Nhóm chuỗi cùng prefix để đệ quy tìm kiếm |
-| **MỚI** | 8 file test + 1 file `.ref` | Đảm bảo thuật toán chạy đúng |
+| **MỚI** | 8 file test + 1 file `.ref`   | Đảm bảo thuật toán chạy đúng               |
 
 ### Cây thư mục (chỉ hiện file liên quan)
 
@@ -78,10 +78,10 @@ weka/trunk/weka/
 
 Weka gốc chỉ dùng **JUnit 4** (cũ). SPADE test suite dùng **JUnit 5** (mới hơn, có `@BeforeEach`, `assertThrows`, v.v.). Cần thêm 2 thư viện:
 
-| Thư viện | Vai trò |
-|----------|---------|
-| `junit-jupiter-api` | Cung cấp annotation `@Test`, `@BeforeEach`, `assertEquals()` |
-| `junit-jupiter-engine` | Engine để Maven nhận diện và chạy test JUnit 5 |
+| Thư viện               | Vai trò                                                            |
+| ------------------------ | ------------------------------------------------------------------- |
+| `junit-jupiter-api`    | Cung cấp annotation `@Test`, `@BeforeEach`, `assertEquals()` |
+| `junit-jupiter-engine` | Engine để Maven nhận diện và chạy test JUnit 5                |
 
 ### Thêm gì?
 
@@ -138,6 +138,7 @@ Thêm `weka.associations.Spade,\` vào danh sách (giữ thứ tự ABC):
 ### Tại sao cần package riêng `spade/`?
 
 SPADE cần 4 cấu trúc dữ liệu đặc biệt mà Weka chưa có. Đặt trong subpackage `weka.associations.spade` để:
+
 - Tách biệt logic nội bộ khỏi giao diện Weka
 - Giữ code sạch, dễ bảo trì
 - Theo convention của Weka (ví dụ: `weka.classifiers.trees` chứa helper classes)
@@ -156,9 +157,9 @@ SPADE biểu diễn dữ liệu này qua 4 khái niệm:
 
 ```mermaid
 flowchart TD
-    A["Element\n(1 nhom item cung thoi diem)\nVD: BanhMi, hoac BanhMi+Bo"] --> B["Sequence\n(chuoi Element co thu tu)\nVD: BanhMi - Sua - Trung"]
-    C["IdList\n(danh sach vi tri xuat hien)\nVD: BanhMi xuat hien o Khach1-Event1, Khach2-Event1"] --> B
-    B --> D["EquivalenceClass\n(nhom Sequence co cung prefix)\nVD: tat ca chuoi bat dau bang BanhMi"]
+    A["Element\n(1 nhóm item cùng thời điểm)\nVD: BanhMi, hoac BanhMi+Bo"] --> B["Sequence\n(chuỗi Element có thứ tự)\nVD: BanhMi - Sua - Trung"]
+    C["IdList\n(danh sách vị trí xuất hiện)\nVD: BanhMi xuất hiện ở Khach1-Event1, Khach2-Event1"] --> B
+    B --> D["EquivalenceClass\n(nhóm Sequence có cùng prefix)\nVD: tất cả chuỗi bắt đầu bằng BanhMi"]
 ```
 
 ### 3.2 — Element.java — "Nhóm item cùng thời điểm"
@@ -166,17 +167,18 @@ flowchart TD
 **Vai trò:** Đại diện cho 1 hoặc nhiều item xảy ra **đồng thời** (cùng event).
 
 **Ví dụ thực tế:**
+
 - Mua **chỉ Bánh mì** → Element chứa 1 item: `{BanhMi}`
 - Mua **Bánh mì VÀ Bơ cùng lúc** → Element chứa 2 items: `{BanhMi, Bo}`
 
 **Logic quan trọng:**
 
-| Method | Làm gì | Tại sao cần |
-|--------|--------|-------------|
-| `addItem(item)` | Thêm item + **sort lại** | Đảm bảo `{A,B}` luôn == `{B,A}` (thứ tự không quan trọng trong cùng event) |
-| `equals()` | So sánh 2 Element | Dùng để check trùng lặp pattern |
-| `hashCode()` | Tạo hash từ items | Cần cho `HashSet<Sequence>` hoạt động đúng |
-| `copy()` | Tạo bản sao | Khi mở rộng sequence, ta copy rồi thêm chứ không sửa bản gốc |
+| Method            | Làm gì                        | Tại sao cần                                                                           |
+| ----------------- | ------------------------------- | --------------------------------------------------------------------------------------- |
+| `addItem(item)` | Thêm item +**sort lại** | Đảm bảo `{A,B}` luôn == `{B,A}` (thứ tự không quan trọng trong cùng event) |
+| `equals()`      | So sánh 2 Element              | Dùng để check trùng lặp pattern                                                    |
+| `hashCode()`    | Tạo hash từ items             | Cần cho `HashSet<Sequence>` hoạt động đúng                                      |
+| `copy()`        | Tạo bản sao                   | Khi mở rộng sequence, ta copy rồi thêm chứ không sửa bản gốc                   |
 
 **Điểm mấu chốt:** Items trong Element luôn được **sort**. Nếu không sort, `{B,A}` sẽ khác `{A,B}` → thuật toán đếm sai.
 
@@ -269,21 +271,21 @@ Ví dụ: <{A,B}, {C}, {D}>
 
 **2 cách mở rộng chuỗi (cực kỳ quan trọng!):**
 
-| Loại | Method | Ý nghĩa | Ví dụ |
-|------|--------|---------|-------|
+| Loại                        | Method                  | Ý nghĩa                           | Ví dụ                            |
+| ---------------------------- | ----------------------- | ----------------------------------- | ---------------------------------- |
 | **Sequence extension** | `sequenceExtend("D")` | Thêm item như event MỚI ở cuối | `<{A},{B}>` → `<{A},{B},{D}>` |
-| **Itemset extension** | `itemsetExtend("D")` | Thêm item VÀO event cuối cùng | `<{A},{B}>` → `<{A},{B,D}>` |
+| **Itemset extension**  | `itemsetExtend("D")`  | Thêm item VÀO event cuối cùng   | `<{A},{B}>` → `<{A},{B,D}>`   |
 
 > **Tại sao phân biệt?** Vì `<{A},{B,D}>` (B và D cùng lúc) KHÁC `<{A},{B},{D}>` (B rồi D). Đây là điểm khác biệt lớn giữa sequential pattern mining và itemset mining.
 
 **Các method hỗ trợ:**
 
-| Method | Vai trò |
-|--------|---------|
-| `itemCount()` | Tổng số item (k trong k-sequence). `<{A,B},{C}>` → 3 |
-| `getLastItem()` | Item cuối cùng — dùng để xác định atom trong equivalence class |
+| Method                    | Vai trò                                                                      |
+| ------------------------- | ----------------------------------------------------------------------------- |
+| `itemCount()`           | Tổng số item (k trong k-sequence).`<{A,B},{C}>` → 3                      |
+| `getLastItem()`         | Item cuối cùng — dùng để xác định atom trong equivalence class       |
 | `isSequenceExtension()` | Element cuối có 1 item VÀ sequence dài >1 → đây là sequence extension |
-| `copy()` | Tạo bản sao sâu Elements, shallow copy IdList (vì IdList không bị sửa) |
+| `copy()`                | Tạo bản sao sâu Elements, shallow copy IdList (vì IdList không bị sửa) |
 
 ---
 
@@ -310,28 +312,28 @@ Từ nhóm này sinh ra:
 
 ```mermaid
 flowchart TD
-    A["Lay tung cap si, sj trong members"] --> B{"i khac j?"}
-    B -->|Co| C["Temporal join: si join sj"]
-    B -->|Co| D["Reverse join: sj join si"]
-    B -->|Co va lastI nho hon lastJ| E["Equality join: itemset extension"]
-    B -->|i bang j| F["Self-join: si join chinh no"]
+    A["Lấy từng cấp si, sj trong members"] --> B{"i khác j?"}
+    B -->|Có| C["Temporal join: si join sj"]
+    B -->|Có| D["Reverse join: sj join si"]
+    B -->|Có và lastI nhỏ hơn lastJ| E["Equality join: itemset extension"]
+    B -->|i bằng j| F["Self-join: si join chính nó"]
     C --> G{"Support >= minSup?"}
     D --> G
     E --> G
     F --> G
-    G -->|Co| H["Them vao ket qua + equivalence class moi"]
-    G -->|Khong| I["Bo qua"]
-    H --> J["De quy voi equivalence class moi"]
+    G -->|Có| H["Thêm vào kết quả + equivalence class mới"]
+    G -->|Không| I["Bỏ qua"]
+    H --> J["Đệ quy với equivalence class mới"]
 ```
 
 **3 loại join cho mỗi cặp:**
 
-| Case | Điều kiện | Join | Kết quả | Ví dụ |
-|------|-----------|------|---------|-------|
-| 1a | `i != j` | `si.temporalJoin(sj)` | si rồi sj | `<A,B>` + `<A,C>` → `<A,B,C>` |
-| 1b | `i != j` | `sj.temporalJoin(si)` (ngược) | sj rồi si | `<A,B>` + `<A,C>` → `<A,C,B>` |
-| 2 | `i != j` và `lastI < lastJ` | `equalityJoin` | si cùng sj | `<A,B>` + `<A,C>` → `<A,{B,C}>` |
-| 3 | `i == j` | `si.temporalJoin(si)` (tự join) | item lặp | `<A,B>` → `<A,B,B>` |
+| Case | Điều kiện                     | Join                               | Kết quả   | Ví dụ                                |
+| ---- | -------------------------------- | ---------------------------------- | ----------- | -------------------------------------- |
+| 1a   | `i != j`                       | `si.temporalJoin(sj)`            | si rồi sj  | `<A,B>` + `<A,C>` → `<A,B,C>`   |
+| 1b   | `i != j`                       | `sj.temporalJoin(si)` (ngược)  | sj rồi si  | `<A,B>` + `<A,C>` → `<A,C,B>`   |
+| 2    | `i != j` và `lastI < lastJ` | `equalityJoin`                   | si cùng sj | `<A,B>` + `<A,C>` → `<A,{B,C}>` |
+| 3    | `i == j`                       | `si.temporalJoin(si)` (tự join) | item lặp   | `<A,B>` → `<A,B,B>`               |
 
 > **Tại sao cần `maxPatternLength`?** Không giới hạn thì với dữ liệu dày, chuỗi có thể dài vô hạn → **tràn bộ nhớ**. Mặc định giới hạn k=10.
 
@@ -345,9 +347,9 @@ Xem file chi tiết: [spade_main_class.md](./spade_main_class.md)
 
 ```mermaid
 flowchart TD
-    A["Buoc 1: Chuyen du lieu ngang thanh dung\nbuildVerticalDB"] --> B["Buoc 2: Tim 1-sequences pho bien\nitem nao xuat hien du nhieu"]
-    B --> C["Buoc 3: Tim 2-sequences pho bien\njoin tung cap 1-sequence"]
-    C --> D["Buoc 4: De quy tim k-sequences\nqua equivalence classes"]
+    A["Bước 1: Chuyển dữ liệu ngang thành đứng\nbuildVerticalDB"] --> B["Bước 2: Tìm 1-sequences phổ biến\nitem nào xuất hiện đủ nhiều"]
+    B --> C["Bước 3: Tìm 2-sequences phổ biến\njoin từng cấp 1-sequence"]
+    C --> D["Bước 4: Đệ quy tìm k-sequences\nqua equivalence classes"]
 ```
 
 ---
@@ -358,16 +360,16 @@ Xem file chi tiết: [spade_test_files.md](./spade_test_files.md)
 
 ### Tại sao cần nhiều loại test?
 
-| Loại test | Kiểm tra gì | Ví dụ |
-|-----------|-------------|-------|
-| **SpadeTest** | Weka integration | Chạy được với framework kiểm thử Weka chuẩn |
-| **Functional** | Kết quả mining đúng | Input A→B, output có chứa pattern A→B |
-| **Boundary** | Trường hợp biên | Dataset rỗng, chỉ 1 item, minSup = 0 hoặc 1 |
-| **Internal** | Logic join đúng | Equality join khác temporal join |
-| **Determinism** | Kết quả ổn định | Chạy 10 lần cùng data → cùng kết quả |
-| **Property** | Tính chất toán học | Anti-monotonicity: parent support >= child support |
-| **Regression** | Không có bug cũ | SeqID không bị mine như item |
-| **Stress** | Hiệu năng | 1000 sequences không crash |
+| Loại test            | Kiểm tra gì           | Ví dụ                                             |
+| --------------------- | ----------------------- | --------------------------------------------------- |
+| **SpadeTest**   | Weka integration        | Chạy được với framework kiểm thử Weka chuẩn |
+| **Functional**  | Kết quả mining đúng | Input A→B, output có chứa pattern A→B           |
+| **Boundary**    | Trường hợp biên     | Dataset rỗng, chỉ 1 item, minSup = 0 hoặc 1      |
+| **Internal**    | Logic join đúng       | Equality join khác temporal join                   |
+| **Determinism** | Kết quả ổn định    | Chạy 10 lần cùng data → cùng kết quả         |
+| **Property**    | Tính chất toán học  | Anti-monotonicity: parent support >= child support  |
+| **Regression**  | Không có bug cũ      | SeqID không bị mine như item                     |
+| **Stress**      | Hiệu năng             | 1000 sequences không crash                         |
 
 ---
 
@@ -391,14 +393,14 @@ mvn package -P no-tests
 
 ## Tóm tắt — Checklist tái tạo
 
-| # | Việc cần làm | File |
-|---|-------------|------|
-| 1 | Thêm JUnit 5 dependencies | `pom.xml` |
-| 2 | Tạo `Element.java` | `associations/spade/` |
-| 3 | Tạo `IdList.java` | `associations/spade/` |
-| 4 | Tạo `Sequence.java` | `associations/spade/` |
-| 5 | Tạo `EquivalenceClass.java` | `associations/spade/` |
-| 6 | Tạo `Spade.java` | `associations/` |
-| 7 | Đăng ký GUI | `GenericObjectEditor.props` |
-| 8 | Tạo 8 test files + 1 ref | `test/associations/` |
-| 9 | Build & verify | `mvn test` |
+| # | Việc cần làm                | File                          |
+| - | ------------------------------ | ----------------------------- |
+| 1 | Thêm JUnit 5 dependencies     | `pom.xml`                   |
+| 2 | Tạo `Element.java`          | `associations/spade/`       |
+| 3 | Tạo `IdList.java`           | `associations/spade/`       |
+| 4 | Tạo `Sequence.java`         | `associations/spade/`       |
+| 5 | Tạo `EquivalenceClass.java` | `associations/spade/`       |
+| 6 | Tạo `Spade.java`            | `associations/`             |
+| 7 | Đăng ký GUI                 | `GenericObjectEditor.props` |
+| 8 | Tạo 8 test files + 1 ref      | `test/associations/`        |
+| 9 | Build & verify                 | `mvn test`                  |
