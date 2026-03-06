@@ -1,0 +1,30 @@
+@relation breakfast_sequence
+
+@attribute sequenceID numeric
+@attribute eventID numeric
+@attribute banh_mi {0,1}
+@attribute trung {0,1}
+@attribute sua {0,1}
+@attribute bo {0,1}
+@attribute nuoc_cam {0,1}
+
+@data
+1,1,1,0,0,0,0
+1,2,0,1,1,0,0
+1,3,0,0,0,0,1
+
+2,1,0,0,1,0,0
+2,2,1,0,0,1,0
+2,3,0,0,0,0,1
+
+3,1,1,1,0,0,0
+3,2,0,0,1,0,0
+3,3,0,0,0,1,0
+
+4,1,0,1,0,0,0
+4,2,1,0,0,0,0
+4,3,0,0,1,0,0
+4,4,0,0,0,0,1
+
+5,1,1,0,0,0,0
+5,2,0,0,1,1,0
