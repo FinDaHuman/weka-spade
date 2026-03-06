@@ -37,6 +37,7 @@ import weka.core.TechnicalInformation.Field;
 import weka.core.TechnicalInformation.Type;
 import weka.core.TechnicalInformationHandler;
 import weka.core.Utils;
+import weka.gui.FilePropertyMetadata;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -138,6 +139,9 @@ public class Spade
   /** Algorithm execution time in milliseconds */
   protected long m_ElapsedTime;
 
+  /** Path to optional CSV/JSON input file */
+  protected String m_InputFile = "";
+
   /**
    * Constructor.
    */
@@ -209,6 +213,11 @@ public class Spade
         + "\t(default: 1)",
         "I", 1, "-I <attribute number representing the data sequence ID>"));
 
+    result.addElement(new Option(
+        "\tPath to an optional CSV or JSON file containing sequential data.\n"
+        + "\tIf specified, this overrides the standard ARFF data input.",
+        "F", 1, "-F <file path>"));
+
     return result.elements();
   }
 
@@ -251,6 +260,11 @@ public class Spade
     if (tmpStr.length() != 0) {
       setDataSeqID(Integer.parseInt(tmpStr));
     }
+
+    tmpStr = Utils.getOption('F', options);
+    if (tmpStr.length() != 0) {
+      m_InputFile = tmpStr;
+    }
   }
 
   /**
@@ -271,6 +285,11 @@ public class Spade
     result.add("-I");
     result.add("" + getDataSeqID());
 
+    if (m_InputFile != null && !m_InputFile.isEmpty()) {
+      result.add("-F");
+      result.add(m_InputFile);
+    }
+
     return result.toArray(new String[result.size()]);
   }
 
@@ -282,6 +301,7 @@ public class Spade
     m_DataSeqID = 0;
     m_MaxPatternLength = 10;
     m_Debug = false;
+    m_InputFile = "";
   }
 
   /**
@@ -311,38 +331,82 @@ public class Spade
    * @throws Exception if the algorithm fails
    */
   public void buildAssociations(Instances data) throws Exception {
+    
+    // Auto-load from file if -F was specified
+    Instances workingData = data;
+    if (m_InputFile != null && !m_InputFile.isEmpty()) {
+      if (m_Debug) {
+        System.out.println("SPADE: Loading data directly from file: " + m_InputFile);
+      }
+      workingData = weka.associations.spade.SequenceDataConverter.loadFromFile(m_InputFile);
+      // In file-loading mode, sequenceID is reliably the first attribute.
+      m_DataSeqID = 0; 
+    }
+
     // Check capabilities
-    getCapabilities().testWithFail(data);
+    getCapabilities().testWithFail(workingData);
 
     long startTime = System.currentTimeMillis();
 
-    m_OriginalDataSet = new Instances(data);
+    m_OriginalDataSet = new Instances(workingData);
     m_FrequentSequences = new LinkedHashMap<Integer, List<Sequence>>();
     m_TotalFrequentSequences = 0;
 
-    // Step 1: Convert horizontal DB to vertical format (ID-Lists)
+    // Step 1: Detect data format and convert to vertical format (ID-Lists)
     int seqIdAttr = m_DataSeqID;
-    if (seqIdAttr < 0 || seqIdAttr >= data.numAttributes()) {
-      throw new Exception("Invalid sequence ID attribute index: "
-          + (seqIdAttr + 1) + ". Must be between 1 and "
-          + data.numAttributes());
-    }
+    boolean isBasketFormat = false;
 
-    // Extract data items and build vertical DB
-    Map<String, IdList> verticalDB = buildVerticalDB(data, seqIdAttr);
-
-    // Count total distinct sequences depending on data format
-    Set<Integer> distinctSids = new HashSet<Integer>();
-    if (data.attribute(seqIdAttr).isRelationValued()) {
-      distinctSids = null; // We will use numInstances directly
-      m_TotalSequences = data.numInstances();
+    // Auto-detect basket format: check if the seqIdAttr attribute is likely an item
+    // (i.e. a binary nominal attribute) instead of a sequence ID.
+    if (seqIdAttr < 0 || seqIdAttr >= workingData.numAttributes()) {
+      isBasketFormat = true;
     } else {
-      for (int i = 0; i < data.numInstances(); i++) {
-        if (!data.instance(i).isMissing(seqIdAttr)) {
-          distinctSids.add((int) data.instance(i).value(seqIdAttr));
+      Attribute firstAttr = workingData.attribute(seqIdAttr);
+      String seqAttrName = firstAttr.name().toLowerCase();
+      
+      // If the attribute is explicitly named something like "sequenceid" or "seqid", 
+      // or if it's relation-valued, it's definitely not basket format.
+      if (!seqAttrName.contains("seqid") && !seqAttrName.contains("sequenceid") 
+          && !firstAttr.isRelationValued()) {
+        
+        // Check if ALL attributes are binary nominals (basket format) or if the 
+        // first attribute is a binary nominal.
+        if (firstAttr.isNominal() && firstAttr.numValues() == 2) {
+            String val0 = firstAttr.value(0).toLowerCase();
+            String val1 = firstAttr.value(1).toLowerCase();
+            if ((val0.equals("0") && val1.equals("1")) ||
+                (val0.equals("f") && val1.equals("t")) ||
+                (val0.equals("false") && val1.equals("true"))) {
+              isBasketFormat = true;
+            }
         }
       }
-      m_TotalSequences = distinctSids.size();
+    }
+
+    Map<String, IdList> verticalDB;
+    if (isBasketFormat) {
+      // Basket/transaction format: each row is one sequence with one event
+      verticalDB = buildVerticalDBBasket(workingData);
+      m_TotalSequences = workingData.numInstances();
+      if (m_Debug) {
+        System.out.println("SPADE: Detected BASKET format (no sequenceID attribute)");
+      }
+    } else {
+      // Normal sequential format
+      verticalDB = buildVerticalDB(workingData, seqIdAttr);
+
+      // Count total distinct sequences depending on data format
+      if (workingData.attribute(seqIdAttr).isRelationValued()) {
+        m_TotalSequences = workingData.numInstances();
+      } else {
+        Set<Integer> distinctSids = new HashSet<Integer>();
+        for (int i = 0; i < workingData.numInstances(); i++) {
+          if (!workingData.instance(i).isMissing(seqIdAttr)) {
+            distinctSids.add((int) workingData.instance(i).value(seqIdAttr));
+          }
+        }
+        m_TotalSequences = distinctSids.size();
+      }
     }
 
     long minSupportCount = Math.round(m_MinSupport * m_TotalSequences);
@@ -566,33 +630,115 @@ public int getSupport(Sequence s) {
       }
     } else {
       // Horizontal flat format: requires an explicit seqID and tracks event appearances.
+      // Auto-detect eventID attribute (case-insensitive name match)
+      int eventIdAttr = -1;
+      for (int a = 0; a < data.numAttributes(); a++) {
+        if (a == seqIdAttr) continue;
+        if (data.attribute(a).name().equalsIgnoreCase("eventID")) {
+          eventIdAttr = a;
+          break;
+        }
+      }
+
       Map<Integer, Integer> seqEventCounter = new HashMap<Integer, Integer>();
       for (int i = 0; i < data.numInstances(); i++) {
         Instance inst = data.instance(i);
         if (inst.isMissing(seqIdAttr)) continue;
         int sid = (int) inst.value(seqIdAttr);
 
-        // Increment event counter for this sequence
-        Integer eventCount = seqEventCounter.get(sid);
-        if (eventCount == null) {
-          eventCount = 0;
-        }
-        int eid = eventCount;
-        seqEventCounter.put(sid, eventCount + 1);
-
-        // For each attribute (except seqID), create item entries
-        for (int a = 0; a < data.numAttributes(); a++) {
-          if (a == seqIdAttr) continue;
-          if (inst.isMissing(a)) continue;
-
-          Attribute attr = data.attribute(a);
-          String itemName = attr.name() + "=";
-          if (attr.isNominal() || attr.isString()) {
-            itemName += inst.stringValue(a);
-          } else {
-            itemName += Utils.doubleToString(inst.value(a), 4);
+        // Determine EID: use eventID attribute if available, otherwise auto-increment
+        int eid;
+        if (eventIdAttr >= 0 && !inst.isMissing(eventIdAttr)) {
+          eid = (int) inst.value(eventIdAttr);
+        } else {
+          Integer eventCount = seqEventCounter.get(sid);
+          if (eventCount == null) {
+            eventCount = 0;
           }
+          eid = eventCount;
+          seqEventCounter.put(sid, eventCount + 1);
+        }
 
+        // For each attribute (except seqID and eventID), create item entries
+      for (int a = 0; a < data.numAttributes(); a++) {
+        if (a == seqIdAttr) continue;
+        if (a == eventIdAttr) continue;
+        if (inst.isMissing(a)) continue;
+
+        Attribute attr = data.attribute(a);
+        String itemName;
+
+        // Handle binary nominal attributes cleanly (0/1, f/t, false/true)
+        if (attr.isNominal() && attr.numValues() == 2 &&
+            ((attr.value(0).equals("0") && attr.value(1).equals("1")) ||
+             (attr.value(0).equalsIgnoreCase("f") && attr.value(1).equalsIgnoreCase("t")) ||
+             (attr.value(0).equalsIgnoreCase("false") && attr.value(1).equalsIgnoreCase("true")))) {
+           
+           String val = inst.stringValue(a);
+           if (val.equals(attr.value(0))) {
+               continue; // Default to skipping the absent value
+           }
+           // Use just the attribute name for present items
+           itemName = attr.name();
+        } else {
+           itemName = attr.name() + "=";
+           if (attr.isNominal() || attr.isString()) {
+             itemName += inst.stringValue(a);
+           } else {
+             itemName += Utils.doubleToString(inst.value(a), 4);
+           }
+        }
+
+        IdList idList = verticalDB.get(itemName);
+        if (idList == null) {
+          idList = new IdList();
+          verticalDB.put(itemName, idList);
+        }
+        idList.addEntry(sid, eid);
+      }
+      }
+    }
+
+    return verticalDB;
+  }
+
+  /**
+   * Builds the vertical database from basket/transaction data.
+   *
+   * Each row is treated as a separate sequence (SID = row index).
+   * All items with value "1" in a row form a single event (EID = 0).
+   * Items with value "0" or missing are excluded.
+   *
+   * @param data the input data in basket format
+   * @return map from item name to IdList
+   */
+  private Map<String, IdList> buildVerticalDBBasket(Instances data) {
+    Map<String, IdList> verticalDB = new LinkedHashMap<String, IdList>();
+
+    for (int sid = 0; sid < data.numInstances(); sid++) {
+      Instance inst = data.instance(sid);
+      int eid = 0; // All items in one row belong to the same single event
+
+      for (int a = 0; a < data.numAttributes(); a++) {
+        if (inst.isMissing(a)) continue;
+
+        Attribute attr = data.attribute(a);
+        // For nominal binary attributes {0,1}: only include items with value "1"
+        if (attr.isNominal()) {
+          String val = inst.stringValue(a);
+          if (val.equals("0")) continue; // Skip items with value 0
+          // Use attribute name as item name (e.g., "banh_mi" instead of "banh_mi=1")
+          String itemName = attr.name() + "=" + val;
+          IdList idList = verticalDB.get(itemName);
+          if (idList == null) {
+            idList = new IdList();
+            verticalDB.put(itemName, idList);
+          }
+          idList.addEntry(sid, eid);
+        } else if (attr.isNumeric()) {
+          double val = inst.value(a);
+          if (val == 0.0) continue; // Skip zero values
+          String itemName = attr.name() + "=" + Utils.doubleToString(val, 4);
           IdList idList = verticalDB.get(itemName);
           if (idList == null) {
             idList = new IdList();
@@ -701,6 +847,34 @@ public int getSupport(Sequence s) {
    */
   public void setDataSeqID(int value) {
     m_DataSeqID = value - 1;
+  }
+
+  /**
+   * Returns the tip text for this property.
+   *
+   * @return tip text for this property suitable for displaying in the explorer/experimenter gui
+   */
+  public String inputFileTipText() {
+    return "Optional CSV/JSON file to load sequential data from, overriding the main dataset.";
+  }
+
+  /**
+   * Gets the file path for custom CSV/JSON input.
+   *
+   * @return the file path, or empty if not set
+   */
+  public String getInputFile() {
+    return m_InputFile;
+  }
+
+  /**
+   * Sets the file path for custom CSV/JSON input.
+   *
+   * @param value the file path
+   */
+  @FilePropertyMetadata(fileChooserDialogType = 0, directoriesOnly = false)
+  public void setInputFile(String value) {
+    m_InputFile = value;
   }
 
   /**
