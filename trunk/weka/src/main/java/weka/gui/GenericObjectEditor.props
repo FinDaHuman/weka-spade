@@ -441,6 +441,7 @@ weka.associations.Associator=\
  weka.associations.GeneralizedSequentialPatterns,\
  weka.associations.HotSpot,\
  weka.associations.PredictiveApriori,\
+ weka.associations.SpadePython,\
  weka.associations.Tertius
  
 # Lists the ResultProducers I want to choose from
