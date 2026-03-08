@@ -1,0 +1,78 @@
+{
+    "sequences": [
+        {
+            "SID": "S1",
+            "sequence": [
+                [
+                    "banhmi"
+                ],
+                [
+                    "trung",
+                    "sua"
+                ],
+                [
+                    "nuoccam"
+                ]
+            ]
+        },
+        {
+            "SID": "S2",
+            "sequence": [
+                [
+                    "sua"
+                ],
+                [
+                    "banhmi",
+                    "bo"
+                ],
+                [
+                    "nuoccam"
+                ]
+            ]
+        },
+        {
+            "SID": "S3",
+            "sequence": [
+                [
+                    "banhmi",
+                    "trung"
+                ],
+                [
+                    "sua"
+                ],
+                [
+                    "bo"
+                ]
+            ]
+        },
+        {
+            "SID": "S4",
+            "sequence": [
+                [
+                    "trung"
+                ],
+                [
+                    "banhmi"
+                ],
+                [
+                    "sua"
+                ],
+                [
+                    "nuoccam"
+                ]
+            ]
+        },
+        {
+            "SID": "S5",
+            "sequence": [
+                [
+                    "banhmi"
+                ],
+                [
+                    "sua",
+                    "bo"
+                ]
+            ]
+        }
+    ]
+}

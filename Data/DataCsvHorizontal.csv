@@ -1,0 +1,6 @@
+SID,E1,E2,E3,E4
+S1,banhmi,"trung,sua",nuoccam,
+S2,sua,"banhmi,bo",nuoccam,
+S3,"banhmi,trung",sua,bo,
+S4,trung,banhmi,sua,nuoccam
+S5,banhmi,"sua,bo",,
